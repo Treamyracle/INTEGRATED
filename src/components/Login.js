@@ -96,7 +96,7 @@ const Login = () => {
 
           <label htmlFor="password">Password</label>
           <div className="input-box">
-            <img src="/static/image/Vectorlock.svg" alt="Lock Icon" />
+            <img src="/image/Vectorlock.svg" alt="Lock Icon" />
             <input 
               type={passwordVisible ? "text" : "password"} 
               id="password" 
