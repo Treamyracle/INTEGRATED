@@ -283,11 +283,11 @@ func init() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.POST("/signin", signInHandler)
-	router.GET("/flowlist", getFlowListHandler)
-	router.GET("/flowlist/:id", getFlowItemHandler)
-	router.POST("/flowlist", addFlowItemHandler)
-	router.DELETE("/flowlist/:id", removeFlowItemHandler)
+	router.POST("/api/signin", signInHandler)
+	router.GET("/api/flowlist", getFlowListHandler)
+	router.GET("/api/flowlist/:id", getFlowItemHandler)
+	router.POST("/api/flowlist", addFlowItemHandler)
+	router.DELETE("/api/flowlist/:id", removeFlowItemHandler)
 }
 
 // Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
