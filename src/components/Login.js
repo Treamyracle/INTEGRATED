@@ -43,7 +43,14 @@ const Login = () => {
       });
       window.google.accounts.id.renderButton(
         document.getElementById("googleSignInDiv"),
-        { theme: "outline", size: "large" }
+        { 
+          theme: "outline",
+          size: "large",
+          width: 280,
+          text: "signin_with",
+          locale: "id_ID",
+          shape: "rectangular"
+        }
       );
     }
   }, []);
@@ -117,7 +124,7 @@ const Login = () => {
         </form>
 
         <p className="or-text">Or Sign In with Google</p>
-        <div id="googleSignInDiv"></div>
+        <div id="googleSignInDiv" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}></div>
 
         <p className="signup-text">
           Don't have an account? <a href="/signup">Sign Up.</a>
