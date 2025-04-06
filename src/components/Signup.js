@@ -48,14 +48,14 @@ const Signup = () => {
   return (
     <div className="container">
       <div className="header">
-        <img src="/static/image/signup.svg" alt="User Icon" className="icon" />
+        <img src="/image/signup.svg" alt="User Icon" className="icon" />
         <h2>Sign Up!</h2>
       </div>
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">Email Address</label>
           <div className="input-box">
-            <img src="/static/image/Vectoremail.svg" alt="Email Icon" />
+            <img src="/image/Vectoremail.svg" alt="Email Icon" />
             <input 
               type="email" 
               id="email" 
@@ -68,7 +68,7 @@ const Signup = () => {
 
           <label htmlFor="password">Password</label>
           <div className="input-box">
-            <img src="/static/image/Vectorlock.svg" alt="Lock Icon" />
+            <img src="/image/Vectorlock.svg" alt="Lock Icon" />
             <input 
               type={passwordVisible[0] ? "text" : "password"} 
               id="password" 
@@ -79,7 +79,7 @@ const Signup = () => {
               required 
             />
             <img 
-              src={passwordVisible[0] ? "/static/image/eye-close.svg" : "/static/image/eye.svg"} 
+              src={passwordVisible[0] ? "/image/eye-close.svg" : "/image/eye.svg"} 
               className="pweye" 
               alt="Toggle Password" 
               onClick={() => togglePassword(0)}
@@ -88,7 +88,7 @@ const Signup = () => {
 
           <label htmlFor="confirm-password">Confirm Password</label>
           <div className="input-box">
-            <img src="/static/image/Vectorlock.svg" alt="Lock Icon" />
+            <img src="/image/Vectorlock.svg" alt="Lock Icon" />
             <input 
               type={passwordVisible[1] ? "text" : "password"} 
               id="confirm-password" 
@@ -99,7 +99,7 @@ const Signup = () => {
               required 
             />
             <img 
-              src={passwordVisible[1] ? "/static/image/eye-close.svg" : "/static/image/eye.svg"} 
+              src={passwordVisible[1] ? "/image/eye-close.svg" : "/image/eye.svg"} 
               className="pweye" 
               alt="Toggle Password" 
               onClick={() => togglePassword(1)}
@@ -112,9 +112,9 @@ const Signup = () => {
         <p className="or-text">Or Sign Up with</p>
 
         <div className="social-login">
-          <button className="google-btn"><img src="/static/image/Google.svg" alt="Google" /></button>
-          <button className="facebook-btn"><img src="/static/image/Facebookfb.svg" alt="Facebook" /></button>
-          <button className="twitter-btn"><img src="/static/image/Vectortwitter.svg" alt="Twitter" /></button>
+          <button className="google-btn"><img src="/image/Google.svg" alt="Google" /></button>
+          <button className="facebook-btn"><img src="/image/Facebookfb.svg" alt="Facebook" /></button>
+          <button className="twitter-btn"><img src="/image/Vectortwitter.svg" alt="Twitter" /></button>
         </div>
 
         <p className="signup-text">
