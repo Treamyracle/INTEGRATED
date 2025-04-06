@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cd my-react-app && npm install && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
