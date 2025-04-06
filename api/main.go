@@ -268,9 +268,8 @@ func getFlowItemHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-// init akan dipanggil sekali saat fungsi dieksekusi pertama kali.
-// Inisialisasi DB dan router serta daftarkan semua endpoint API.
-func init() {
+// Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
+func Handler(w http.ResponseWriter, r *http.Request) {
 	initDB()
 
 	router = gin.New()
@@ -290,9 +289,6 @@ func init() {
 	router.GET("/flowlist/:id", getFlowItemHandler)
 	router.POST("/flowlist", addFlowItemHandler)
 	router.DELETE("/flowlist/:id", removeFlowItemHandler)
-}
 
-// Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
-func Handler(w http.ResponseWriter, r *http.Request) {
 	router.ServeHTTP(w, r)
 }
