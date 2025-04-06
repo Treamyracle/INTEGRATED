@@ -76,7 +76,7 @@ const Login = () => {
   return (
     <div className="container">
       <div className="header">
-        <img src="../public/image/signin.svg" alt="User Icon" className="icon" />
+      <img src="/image/signin.svg" alt="User Icon" className="icon" />
         <h2>Sign In!</h2>
       </div>
       <div className="form-container">
