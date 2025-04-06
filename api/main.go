@@ -360,16 +360,26 @@ func initDBWithTimeout() error {
 		return errors.New("SUPABASE_DB_URL environment variable is not set")
 	}
 
+	// Force IPv4
+	connStr = connStr + "&host_ip_type=prefer-ipv4"
+
 	config, err := pgxpool.ParseConfig(connStr)
 	if err != nil {
 		return fmt.Errorf("unable to parse database config: %v", err)
 	}
 
+	// Additional connection settings
 	config.ConnConfig.RuntimeParams = map[string]string{
 		"application_name": "myapp",
 	}
 
-	log.Println("Connecting to DB...")
+	// Set connection pool settings
+	config.MaxConns = 5
+	config.MinConns = 1
+	config.MaxConnLifetime = time.Hour
+	config.MaxConnIdleTime = 30 * time.Minute
+
+	log.Printf("Connecting to DB with config: %+v", config.ConnConfig.Host)
 	db, err = pgxpool.NewWithConfig(ctx, config)
 	if err != nil {
 		return fmt.Errorf("unable to create connection pool: %v", err)
