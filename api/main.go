@@ -268,15 +268,14 @@ func getFlowItemHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-// Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
-func Handler(w http.ResponseWriter, r *http.Request) {
+func init() {
 	initDB()
 
 	router = gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"}, // Sesuaikan dengan kebutuhan
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"POST", "GET", "OPTIONS", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -289,6 +288,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	router.GET("/flowlist/:id", getFlowItemHandler)
 	router.POST("/flowlist", addFlowItemHandler)
 	router.DELETE("/flowlist/:id", removeFlowItemHandler)
+}
 
+// Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
+func Handler(w http.ResponseWriter, r *http.Request) {
 	router.ServeHTTP(w, r)
 }
