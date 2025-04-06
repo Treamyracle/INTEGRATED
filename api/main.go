@@ -32,12 +32,31 @@ func initDB() {
 		log.Fatal("SUPABASE_DB_URL environment variable is not set")
 	}
 
-	log.Println("Connecting to DB with:", connStr)
-	db, err = pgxpool.New(context.Background(), connStr)
+	config, err := pgxpool.ParseConfig(connStr)
+	if err != nil {
+		log.Fatalf("Unable to parse database config: %v", err)
+	}
+
+	// Set additional connection parameters
+	config.ConnConfig.RuntimeParams = map[string]string{
+		"application_name": "myapp",
+	}
+
+	log.Println("Connecting to DB...")
+	db, err = pgxpool.NewWithConfig(context.Background(), config)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v", err)
 	}
-	log.Println("Database connected")
+
+	// Test connection
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := db.Ping(ctx); err != nil {
+		log.Fatalf("Unable to ping database: %v", err)
+	}
+
+	log.Println("Database connected successfully")
 }
 
 // User mewakili data pada tabel users
