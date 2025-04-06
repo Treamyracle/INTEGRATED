@@ -4,7 +4,10 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build"
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
     },
     {
       "src": "api/main.go",
@@ -17,7 +20,20 @@
       "dest": "api/main.go"
     },
     {
-      "handle": "filesystem"
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
+    },
+    {
+      "src": "/logo(.*).png",
+      "dest": "/logo$1.png"
     },
     {
       "src": "/(.*)",
