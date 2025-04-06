@@ -360,17 +360,18 @@ func initDBWithTimeout() error {
 		return errors.New("SUPABASE_DB_URL environment variable is not set")
 	}
 
-	// Force IPv4
-	connStr = connStr + "&host_ip_type=prefer-ipv4"
-
+	// Parse the connection string to modify it
 	config, err := pgxpool.ParseConfig(connStr)
 	if err != nil {
 		return fmt.Errorf("unable to parse database config: %v", err)
 	}
 
-	// Additional connection settings
+	// Force specific connection parameters
 	config.ConnConfig.RuntimeParams = map[string]string{
-		"application_name": "myapp",
+		"application_name":        "myapp",
+		"tcp_keepalives_idle":     "60",
+		"tcp_keepalives_interval": "30",
+		"tcp_keepalives_count":    "5",
 	}
 
 	// Set connection pool settings
@@ -378,16 +379,30 @@ func initDBWithTimeout() error {
 	config.MinConns = 1
 	config.MaxConnLifetime = time.Hour
 	config.MaxConnIdleTime = 30 * time.Minute
+	config.HealthCheckPeriod = time.Minute
 
-	log.Printf("Connecting to DB with config: %+v", config.ConnConfig.Host)
+	// Add connection timeout
+	config.ConnConfig.ConnectTimeout = 10 * time.Second
+
+	log.Printf("Attempting to connect to DB at host: %s", config.ConnConfig.Host)
+
+	// Create connection pool
 	db, err = pgxpool.NewWithConfig(ctx, config)
 	if err != nil {
 		return fmt.Errorf("unable to create connection pool: %v", err)
 	}
 
-	// Test connection
-	if err := db.Ping(ctx); err != nil {
-		return fmt.Errorf("unable to ping database: %v", err)
+	// Test connection with retry
+	for i := 0; i < 3; i++ {
+		err = db.Ping(ctx)
+		if err == nil {
+			break
+		}
+		log.Printf("Ping attempt %d failed: %v", i+1, err)
+		time.Sleep(time.Second * 2)
+	}
+	if err != nil {
+		return fmt.Errorf("unable to ping database after retries: %v", err)
 	}
 
 	log.Println("Database connected successfully")
