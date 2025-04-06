@@ -1,0 +1,176 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #F9F7F3;
+}
+
+.container {
+    width: 400px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(to bottom, #DF6060, #A31D1D);
+    text-align: center;
+    padding: 30px 0;
+    color: white;
+    border-radius: 15px;
+}
+
+.header img {
+    margin-bottom: 0;
+}
+
+.header h2 {
+    margin-top: 0;
+}
+
+
+.icon {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+/* Form */
+.form-container {
+    padding: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-box {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    background: #FDEDED;
+    border: 1px solid #F8BBD0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.input-box .pweye {
+    position: absolute;
+    right: 1px;
+    cursor: pointer;
+}
+
+.input-box img {
+    margin-right: 10px;
+}
+
+input {
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Sign In Button */
+.sign-in-btn {
+    width: 100%;
+    padding: 12px;
+    background: #D84040;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.sign-in-btn:hover {
+    background: #B71C1C;
+}
+
+/* Social Login */
+.or-text {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.social-login button {
+    width: 70px;
+    height: 40px;
+    border-radius: 20%;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.google-btn img {
+    margin-top: 5px;
+}
+
+.facebook-btn {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.facebook-btn img {
+    margin-top: 5px;
+}
+
+.twitter-btn {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.twitter-btn img {
+    margin-top: 5px;
+}
+
+/* Sign Up Text */
+.signup-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.signup-text a {
+    color: #D32F2F;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
