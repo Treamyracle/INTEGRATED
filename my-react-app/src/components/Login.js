@@ -106,7 +106,7 @@ const Login = () => {
               required
             />
             <img 
-              src={passwordVisible ? "image/eye-close.svg" : "Image/eye.svg"} 
+              src={passwordVisible ? "image/eye-close.svg" : "image/eye.svg"} 
               className="pweye" 
               alt="Toggle Password" 
               onClick={togglePassword}
