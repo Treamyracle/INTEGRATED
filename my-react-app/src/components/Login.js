@@ -83,7 +83,7 @@ const Login = () => {
         <form onSubmit={handleLocalSignIn}>
           <label htmlFor="email">Email Address</label>
           <div className="input-box">
-            <img src="Image/Vectoremail.svg" alt="Email Icon" />
+            <img src="image/Vectoremail.svg" alt="Email Icon" />
             <input 
               type="text" 
               id="email" 
@@ -96,7 +96,7 @@ const Login = () => {
 
           <label htmlFor="password">Password</label>
           <div className="input-box">
-            <img src="Image/Vectorlock.svg" alt="Lock Icon" />
+            <img src="image/Vectorlock.svg" alt="Lock Icon" />
             <input 
               type={passwordVisible ? "text" : "password"} 
               id="password" 
@@ -106,7 +106,7 @@ const Login = () => {
               required
             />
             <img 
-              src={passwordVisible ? "Image/eye-close.svg" : "Image/eye.svg"} 
+              src={passwordVisible ? "image/eye-close.svg" : "Image/eye.svg"} 
               className="pweye" 
               alt="Toggle Password" 
               onClick={togglePassword}
