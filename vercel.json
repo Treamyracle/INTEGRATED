@@ -13,12 +13,13 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/main.go"
+      "src": "/api/.*",
+      "dest": "/api/main.go",
+      "check": true
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/my-react-app/$1"
     }
   ]
 }
