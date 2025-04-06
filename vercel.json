@@ -2,9 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "my-react-app/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "config": {
+        "distDir": "my-react-app/build"
+      }
     },
     {
       "src": "api/main.go",
@@ -14,8 +16,7 @@
   "routes": [
     {
       "src": "/api/.*",
-      "dest": "/api/main.go",
-      "check": true
+      "dest": "api/main.go"
     },
     {
       "src": "/(.*)",
