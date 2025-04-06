@@ -2,7 +2,9 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -263,32 +265,66 @@ func removeFlowItemHandler(c *gin.Context) {
 }
 
 func getFlowItemHandler(c *gin.Context) {
+	// Log request
+	log.Printf("Getting flow item with ID: %s", c.Param("id"))
+
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
+		log.Printf("Invalid ID format: %s, error: %v", idStr, err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid id"})
 		return
 	}
 
-	ctx := context.Background()
+	// Create context with timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
 	var item FlowItem
-	err = db.QueryRow(ctx, "SELECT id, user_id, category, amount, date FROM flowlist WHERE id = $1", id).
-		Scan(&item.ID, &item.UserID, &item.Category, &item.Amount, &item.Date)
+	err = db.QueryRow(ctx, `
+		SELECT id, user_id, category, amount, date 
+		FROM flowlist 
+		WHERE id = $1
+	`, id).Scan(&item.ID, &item.UserID, &item.Category, &item.Amount, &item.Date)
+
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
+			log.Printf("No flow item found with ID: %d", id)
 			c.JSON(http.StatusNotFound, gin.H{"error": "Item not found"})
 		} else {
-			log.Printf("Error retrieving flow item with id %d: %v", id, err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
+			log.Printf("Database error retrieving flow item with id %d: %v", id, err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error":   "Database error",
+				"details": err.Error(),
+			})
 		}
 		return
 	}
 
+	log.Printf("Successfully retrieved flow item: %+v", item)
 	c.JSON(http.StatusOK, item)
 }
 
 func init() {
-	initDB()
+	// Set Gin to release mode
+	gin.SetMode(gin.ReleaseMode)
+
+	// Initialize database with retry
+	maxRetries := 3
+	var err error
+	for i := 0; i < maxRetries; i++ {
+		err = initDBWithTimeout()
+		if err == nil {
+			break
+		}
+		log.Printf("Failed to initialize DB (attempt %d/%d): %v", i+1, maxRetries, err)
+		if i < maxRetries-1 {
+			time.Sleep(time.Second * 2)
+		}
+	}
+	if err != nil {
+		log.Fatalf("Failed to initialize database after %d attempts: %v", maxRetries, err)
+	}
 
 	router = gin.New()
 	router.Use(gin.Logger())
@@ -309,7 +345,57 @@ func init() {
 	router.DELETE("/api/flowlist/:id", removeFlowItemHandler)
 }
 
+// initDBWithTimeout attempts to initialize the database connection with a timeout
+func initDBWithTimeout() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found, using system environment variables")
+	}
+
+	connStr := os.Getenv("SUPABASE_DB_URL")
+	if connStr == "" {
+		return errors.New("SUPABASE_DB_URL environment variable is not set")
+	}
+
+	config, err := pgxpool.ParseConfig(connStr)
+	if err != nil {
+		return fmt.Errorf("unable to parse database config: %v", err)
+	}
+
+	config.ConnConfig.RuntimeParams = map[string]string{
+		"application_name": "myapp",
+	}
+
+	log.Println("Connecting to DB...")
+	db, err = pgxpool.NewWithConfig(ctx, config)
+	if err != nil {
+		return fmt.Errorf("unable to create connection pool: %v", err)
+	}
+
+	// Test connection
+	if err := db.Ping(ctx); err != nil {
+		return fmt.Errorf("unable to ping database: %v", err)
+	}
+
+	log.Println("Database connected successfully")
+	return nil
+}
+
 // Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
 func Handler(w http.ResponseWriter, r *http.Request) {
+	// Add panic recovery
+	defer func() {
+		if err := recover(); err != nil {
+			log.Printf("Panic recovered in Handler: %v", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]string{
+				"error": "Internal server error",
+			})
+		}
+	}()
+
 	router.ServeHTTP(w, r)
 }
