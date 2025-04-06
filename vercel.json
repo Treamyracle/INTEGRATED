@@ -18,9 +18,7 @@
       "src": "/api/(.*)",
       "dest": "api/main.go"
     },
-    {
-      "handle": "filesystem"
-    },
+    { "handle": "filesystem" },
     {
       "src": "/(.*)",
       "dest": "/index.html"
