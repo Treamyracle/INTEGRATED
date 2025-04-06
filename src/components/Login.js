@@ -76,14 +76,14 @@ const Login = () => {
   return (
     <div className="container">
       <div className="header">
-      <img src="/image/signin.svg" alt="User Icon" className="icon" />
+        <img src="/static/image/signin.svg" alt="User Icon" className="icon" />
         <h2>Sign In!</h2>
       </div>
       <div className="form-container">
         <form onSubmit={handleLocalSignIn}>
           <label htmlFor="email">Email Address</label>
           <div className="input-box">
-            <img src="image/Vectoremail.svg" alt="Email Icon" />
+            <img src="/static/image/Vectoremail.svg" alt="Email Icon" />
             <input 
               type="text" 
               id="email" 
@@ -96,7 +96,7 @@ const Login = () => {
 
           <label htmlFor="password">Password</label>
           <div className="input-box">
-            <img src="image/Vectorlock.svg" alt="Lock Icon" />
+            <img src="/static/image/Vectorlock.svg" alt="Lock Icon" />
             <input 
               type={passwordVisible ? "text" : "password"} 
               id="password" 
@@ -106,7 +106,7 @@ const Login = () => {
               required
             />
             <img 
-              src={passwordVisible ? "image/eye-close.svg" : "image/eye.svg"} 
+              src={passwordVisible ? "/static/image/eye-close.svg" : "/static/image/eye.svg"} 
               className="pweye" 
               alt="Toggle Password" 
               onClick={togglePassword}
@@ -120,7 +120,7 @@ const Login = () => {
         <div id="googleSignInDiv"></div>
 
         <p className="signup-text">
-          Don’t have an account? <a href="/Signup">Sign Up.</a>
+          Don't have an account? <a href="/signup">Sign Up.</a>
         </p>
       </div>
     </div>
