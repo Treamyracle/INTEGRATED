@@ -117,16 +117,18 @@ func signInHandler(c *gin.Context) {
 			Scan(&user.ID, &user.Email, &user.Username, &user.Password)
 		if err != nil {
 			// Jika user tidak ditemukan, buat user baru
-			if errors.Is(err, pgx.ErrNoRows) {
+			if err == pgx.ErrNoRows {
+				log.Printf("User with email %s not found, creating new user...", email)
 				err = db.QueryRow(ctx,
 					"INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING id, email, username, password",
-					email, email, "",
+					email, email, "", // Menggunakan email sebagai username default, password kosong untuk Google Sign In
 				).Scan(&user.ID, &user.Email, &user.Username, &user.Password)
 				if err != nil {
 					log.Printf("Insert user error: %v", err)
 					c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 					return
 				}
+				log.Printf("Successfully created new user: %+v", user)
 			} else {
 				log.Printf("Query user error: %v", err)
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
