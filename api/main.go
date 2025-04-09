@@ -13,7 +13,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"google.golang.org/api/idtoken"
@@ -367,6 +367,9 @@ func initDBWithTimeout() error {
 	if err != nil {
 		return fmt.Errorf("unable to parse database config: %v", err)
 	}
+
+	// Disable prepared statements for PgBouncer compatibility (Transaction Pooling)
+	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
 
 	// Force specific connection parameters
 	config.ConnConfig.RuntimeParams = map[string]string{
