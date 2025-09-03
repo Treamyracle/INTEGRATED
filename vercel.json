@@ -10,14 +10,14 @@
       }
     },
     {
-      "src": "api/*.go",
+      "src": "api/main.go",
       "use": "@vercel/go"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/main.go"
+      "dest": "/api/main"
     },
     {
       "handle": "filesystem"
