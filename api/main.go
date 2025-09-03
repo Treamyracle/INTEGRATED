@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -27,11 +28,11 @@ var router *gin.Engine
 // initDB menginisialisasi koneksi ke Supabase (PostgreSQL) menggunakan pgxpool
 // (mengembalikan error agar caller bisa menangani kegagalan)
 func initDB() error {
-	_ = godotenv.Load() // Muat file .env jika ada (lokal), tidak fatal
+	_ = godotenv.Load() // load .env jika ada (lokal)
 
-	connStr := os.Getenv("SUPABASE_DB_URL")
+	connStr := buildConnStrFromEnv()
 	if connStr == "" {
-		return errors.New("SUPABASE_DB_URL environment variable is not set")
+		return errors.New("database connection information is not set (SUPABASE_DB_URL or SUPABASE_DB_* env missing)")
 	}
 
 	config, err := pgxpool.ParseConfig(connStr)
@@ -39,15 +40,18 @@ func initDB() error {
 		return fmt.Errorf("unable to parse database config: %v", err)
 	}
 
-	// Set additional connection parameters
-	config.ConnConfig.RuntimeParams = map[string]string{
-		"application_name": "myapp",
-	}
-
-	// For Supabase Transaction Pooler: use simple protocol (no prepared statements)
+	// Supabase transaction pooler membutuhkan simple protocol
 	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
 
-	// Pool / health settings (tune sesuai kebutuhan)
+	// Optional runtime params
+	config.ConnConfig.RuntimeParams = map[string]string{
+		"application_name":        "myapp",
+		"tcp_keepalives_idle":     "60",
+		"tcp_keepalives_interval": "30",
+		"tcp_keepalives_count":    "5",
+	}
+
+	// Pool settings
 	config.MaxConns = 5
 	config.MinConns = 1
 	config.MaxConnLifetime = time.Hour
@@ -55,22 +59,20 @@ func initDB() error {
 	config.HealthCheckPeriod = time.Minute
 	config.ConnConfig.ConnectTimeout = 10 * time.Second
 
-	log.Println("Connecting to DB...")
+	log.Println("Connecting to DB (using connection string built from env)...")
 	pool, err := pgxpool.NewWithConfig(context.Background(), config)
 	if err != nil {
 		return fmt.Errorf("unable to create connection pool: %v", err)
 	}
 
-	// Test connection with timeout
+	// Test ping
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := pool.Ping(ctx); err != nil {
-		// Tutup pool, lalu kembalikan error
 		pool.Close()
 		return fmt.Errorf("unable to ping database: %v", err)
 	}
 
-	// assign ke package var setelah ping sukses
 	db = pool
 	log.Println("Database connected successfully via transaction pooler")
 	return nil
@@ -336,15 +338,23 @@ func getFlowItemHandler(c *gin.Context) {
 }
 
 func healthHandler(c *gin.Context) {
-	env := os.Getenv("SUPABASE_DB_URL")
-	if env == "" {
-		c.JSON(http.StatusServiceUnavailable, gin.H{
-			"status": "error",
-			"env":    "SUPABASE_DB_URL not set",
-		})
-		return
+	// Cek apakah env connection tersedia (baik SUPABASE_DB_URL atau parts)
+	if os.Getenv("SUPABASE_DB_URL") == "" {
+		// Jika SUPABASE_DB_URL kosong, cek parts
+		if os.Getenv("SUPABASE_DB_USER") == "" ||
+			os.Getenv("SUPABASE_DB_PASSWORD") == "" ||
+			os.Getenv("SUPABASE_DB_HOST") == "" ||
+			os.Getenv("SUPABASE_DB_PORT") == "" ||
+			os.Getenv("SUPABASE_DB_NAME") == "" {
+			c.JSON(http.StatusServiceUnavailable, gin.H{
+				"status": "error",
+				"env":    "supabase env missing (SUPABASE_DB_URL or SUPABASE_DB_* not set)",
+			})
+			return
+		}
 	}
 
+	// Cek apakah db object sudah terkoneksi
 	if db == nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"status": "error",
@@ -366,9 +376,42 @@ func healthHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": "ok",
-		"env":    "SUPABASE_DB_URL set",
 		"db":     "connected",
 	})
+}
+
+// buildConnStrFromEnv: jika SUPABASE_DB_URL ada, gunakan itu.
+// Jika tidak, gabungkan dari bagian-bagian env:
+// SUPABASE_DB_USER, SUPABASE_DB_PASSWORD, SUPABASE_DB_HOST, SUPABASE_DB_PORT, SUPABASE_DB_NAME
+func buildConnStrFromEnv() string {
+	// Prioritas: langsung pakai SUPABASE_DB_URL jika ada
+	if s := os.Getenv("SUPABASE_DB_URL"); s != "" {
+		return s
+	}
+
+	user := os.Getenv("SUPABASE_DB_USER")
+	pass := os.Getenv("SUPABASE_DB_PASSWORD")
+	host := os.Getenv("SUPABASE_DB_HOST")
+	port := os.Getenv("SUPABASE_DB_PORT")
+	dbname := os.Getenv("SUPABASE_DB_NAME")
+
+	if user == "" || pass == "" || host == "" || port == "" || dbname == "" {
+		return "" // salah satu bagian kunci tidak ada
+	}
+
+	// Gunakan net/url untuk escape user/password dengan aman
+	u := &url.URL{
+		Scheme: "postgresql",
+		User:   url.UserPassword(user, pass),
+		Host:   fmt.Sprintf("%s:%s", host, port),
+		Path:   dbname,
+	}
+
+	q := u.Query()
+	q.Set("sslmode", "require")
+	u.RawQuery = q.Encode()
+
+	return u.String()
 }
 
 func init() {
