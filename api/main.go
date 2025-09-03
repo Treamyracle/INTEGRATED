@@ -356,26 +356,21 @@ func initDBWithTimeout() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("No .env file found, using system environment variables")
-	}
-
 	connStr := os.Getenv("SUPABASE_DB_URL")
 	if connStr == "" {
 		return errors.New("SUPABASE_DB_URL environment variable is not set")
 	}
 
-	// Parse the connection string to modify it
+	// Parse config
 	config, err := pgxpool.ParseConfig(connStr)
 	if err != nil {
 		return fmt.Errorf("unable to parse database config: %v", err)
 	}
 
-	// Disable prepared statements for PgBouncer compatibility (Transaction Pooling)
+	// Wajib untuk transaction pooler
 	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
 
-	// Force specific connection parameters
+	// Runtime params (opsional tapi bagus untuk health)
 	config.ConnConfig.RuntimeParams = map[string]string{
 		"application_name":        "myapp",
 		"tcp_keepalives_idle":     "60",
@@ -383,38 +378,25 @@ func initDBWithTimeout() error {
 		"tcp_keepalives_count":    "5",
 	}
 
-	// Set connection pool settings
 	config.MaxConns = 5
 	config.MinConns = 1
 	config.MaxConnLifetime = time.Hour
 	config.MaxConnIdleTime = 30 * time.Minute
 	config.HealthCheckPeriod = time.Minute
-
-	// Add connection timeout
 	config.ConnConfig.ConnectTimeout = 10 * time.Second
 
-	log.Printf("Attempting to connect to DB at host: %s", config.ConnConfig.Host)
+	log.Printf("Connecting to Supabase transaction pooler at host: %s:%d", config.ConnConfig.Host, config.ConnConfig.Port)
 
-	// Create connection pool
 	db, err = pgxpool.NewWithConfig(ctx, config)
 	if err != nil {
 		return fmt.Errorf("unable to create connection pool: %v", err)
 	}
 
-	// Test connection with retry
-	for i := 0; i < 3; i++ {
-		err = db.Ping(ctx)
-		if err == nil {
-			break
-		}
-		log.Printf("Ping attempt %d failed: %v", i+1, err)
-		time.Sleep(time.Second * 2)
-	}
-	if err != nil {
-		return fmt.Errorf("unable to ping database after retries: %v", err)
+	if err := db.Ping(ctx); err != nil {
+		return fmt.Errorf("unable to ping database: %v", err)
 	}
 
-	log.Println("Database connected successfully")
+	log.Println("Database connected successfully via transaction pooler")
 	return nil
 }
 
