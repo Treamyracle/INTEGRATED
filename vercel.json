@@ -10,11 +10,15 @@
       }
     },
     {
-      "src": "api/main.go",
+      "src": "api/*.go",
       "use": "@vercel/go"
     }
   ],
   "routes": [
+    {
+      "src": "/api",
+      "dest": "/api/main.go"
+    },
     {
       "src": "/api/(.*)",
       "dest": "/api/main.go"
