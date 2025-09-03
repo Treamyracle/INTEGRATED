@@ -37,7 +37,7 @@ func setupRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery(), gin.Logger())
 
-	r.GET("/", func(c *gin.Context) {
+	r.GET("api/", func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 		defer cancel()
 		initDB(ctx)
@@ -51,7 +51,7 @@ func setupRouter() *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"message": "Connected to Supabase!", "time": now})
 	})
 
-	r.GET("/health", func(c *gin.Context) {
+	r.GET("api/health", func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 2*time.Second)
 		defer cancel()
 		initDB(ctx)
