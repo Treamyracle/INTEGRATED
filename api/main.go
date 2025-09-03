@@ -23,20 +23,20 @@ var db *pgxpool.Pool
 var router *gin.Engine
 
 // initDB menginisialisasi koneksi ke Supabase (PostgreSQL) menggunakan pgxpool
-func initDB() {
-	err := godotenv.Load() // Muat file .env jika ada
-	if err != nil {
-		log.Println("No .env file found, using system environment variables")
-	}
+// (tetap ada jika ingin dipanggil secara eksplisit; tidak dipanggil otomatis di init())
+// initDB menginisialisasi koneksi ke Supabase (PostgreSQL) menggunakan pgxpool
+// (mengembalikan error agar caller bisa menangani kegagalan)
+func initDB() error {
+	_ = godotenv.Load() // Muat file .env jika ada (lokal), tidak fatal
 
 	connStr := os.Getenv("SUPABASE_DB_URL")
 	if connStr == "" {
-		log.Fatal("SUPABASE_DB_URL environment variable is not set")
+		return errors.New("SUPABASE_DB_URL environment variable is not set")
 	}
 
 	config, err := pgxpool.ParseConfig(connStr)
 	if err != nil {
-		log.Fatalf("Unable to parse database config: %v", err)
+		return fmt.Errorf("unable to parse database config: %v", err)
 	}
 
 	// Set additional connection parameters
@@ -44,21 +44,36 @@ func initDB() {
 		"application_name": "myapp",
 	}
 
+	// For Supabase Transaction Pooler: use simple protocol (no prepared statements)
+	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	// Pool / health settings (tune sesuai kebutuhan)
+	config.MaxConns = 5
+	config.MinConns = 1
+	config.MaxConnLifetime = time.Hour
+	config.MaxConnIdleTime = 30 * time.Minute
+	config.HealthCheckPeriod = time.Minute
+	config.ConnConfig.ConnectTimeout = 10 * time.Second
+
 	log.Println("Connecting to DB...")
-	db, err = pgxpool.NewWithConfig(context.Background(), config)
+	pool, err := pgxpool.NewWithConfig(context.Background(), config)
 	if err != nil {
-		log.Fatalf("Unable to connect to database: %v", err)
+		return fmt.Errorf("unable to create connection pool: %v", err)
 	}
 
-	// Test connection
+	// Test connection with timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
-	if err := db.Ping(ctx); err != nil {
-		log.Fatalf("Unable to ping database: %v", err)
+	if err := pool.Ping(ctx); err != nil {
+		// Tutup pool, lalu kembalikan error
+		pool.Close()
+		return fmt.Errorf("unable to ping database: %v", err)
 	}
 
-	log.Println("Database connected successfully")
+	// assign ke package var setelah ping sukses
+	db = pool
+	log.Println("Database connected successfully via transaction pooler")
+	return nil
 }
 
 // User mewakili data pada tabel users
@@ -76,6 +91,19 @@ type FlowItem struct {
 	Category string    `json:"category"`
 	Amount   float64   `json:"amount"`
 	Date     time.Time `json:"date"`
+}
+
+// Middleware yang memastikan DB tersedia sebelum akses endpoint yang butuh DB
+func requireDB() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if db == nil {
+			c.AbortWithStatusJSON(http.StatusServiceUnavailable, gin.H{
+				"error": "database not available",
+			})
+			return
+		}
+		c.Next()
+	}
 }
 
 // signInHandler menangani proses sign in baik melalui Google (dengan token)
@@ -117,7 +145,7 @@ func signInHandler(c *gin.Context) {
 			Scan(&user.ID, &user.Email, &user.Username, &user.Password)
 		if err != nil {
 			// Jika user tidak ditemukan, buat user baru
-			if err == pgx.ErrNoRows {
+			if errors.Is(err, pgx.ErrNoRows) {
 				log.Printf("User with email %s not found, creating new user...", email)
 				err = db.QueryRow(ctx,
 					"INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING id, email, username, password",
@@ -311,22 +339,28 @@ func init() {
 	// Set Gin to release mode
 	gin.SetMode(gin.ReleaseMode)
 
-	godotenv.Load()
-	// Initialize database with retry
+	// Muat .env kalau ada (lokal). Di Vercel, env harus diset di dashboard/CLI.
+	_ = godotenv.Load()
+
+	// Coba inisialisasi DB dengan retry, tapi jangan crash proses jika gagal.
 	maxRetries := 3
 	var err error
 	for i := 0; i < maxRetries; i++ {
-		err = initDBWithTimeout()
+		err = initDB()
 		if err == nil {
 			break
 		}
 		log.Printf("Failed to initialize DB (attempt %d/%d): %v", i+1, maxRetries, err)
-		if i < maxRetries-1 {
-			time.Sleep(time.Second * 2)
-		}
+		time.Sleep(2 * time.Second)
 	}
 	if err != nil {
-		log.Fatalf("Failed to initialize database after %d attempts: %v", maxRetries, err)
+		// Log peringatan — JANGAN fatal karena di serverless kita ingin process tetap berjalan
+		log.Printf("Warning: DB not initialized after %d attempts: %v", maxRetries, err)
+	} else {
+		// optional: log masked info that env is set (tidak mencetak value)
+		if os.Getenv("SUPABASE_DB_URL") != "" {
+			log.Printf("SUPABASE_DB_URL is set (len=%d)", len(os.Getenv("SUPABASE_DB_URL")))
+		}
 	}
 
 	router = gin.New()
@@ -341,62 +375,28 @@ func init() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.POST("/api/signin", signInHandler)
-	router.GET("/api/flowlist", getFlowListHandler)
-	router.GET("/api/flowlist/:id", getFlowItemHandler)
-	router.POST("/api/flowlist", addFlowItemHandler)
-	router.DELETE("/api/flowlist/:id", removeFlowItemHandler)
-}
+	// Group API dan pasang middleware requireDB untuk endpoints yang membutuhkan DB
+	api := router.Group("/api")
+	api.Use(requireDB())
 
-// initDBWithTimeout attempts to initialize the database connection with a timeout
-func initDBWithTimeout() error {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	api.POST("/signin", signInHandler)
+	api.GET("/flowlist", getFlowListHandler)
+	api.GET("/flowlist/:id", getFlowItemHandler)
+	api.POST("/flowlist", addFlowItemHandler)
+	api.DELETE("/flowlist/:id", removeFlowItemHandler)
 
-	godotenv.Load()
-
-	connStr := os.Getenv("SUPABASE_DB_URL")
-	if connStr == "" {
-		return errors.New("SUPABASE_DB_URL environment variable is not set")
-	}
-
-	// Parse config
-	config, err := pgxpool.ParseConfig(connStr)
-	if err != nil {
-		return fmt.Errorf("unable to parse database config: %v", err)
-	}
-
-	// Wajib untuk transaction pooler
-	config.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
-
-	// Runtime params (opsional tapi bagus untuk health)
-	config.ConnConfig.RuntimeParams = map[string]string{
-		"application_name":        "myapp",
-		"tcp_keepalives_idle":     "60",
-		"tcp_keepalives_interval": "30",
-		"tcp_keepalives_count":    "5",
-	}
-
-	config.MaxConns = 5
-	config.MinConns = 1
-	config.MaxConnLifetime = time.Hour
-	config.MaxConnIdleTime = 30 * time.Minute
-	config.HealthCheckPeriod = time.Minute
-	config.ConnConfig.ConnectTimeout = 10 * time.Second
-
-	log.Printf("Connecting to Supabase transaction pooler at host: %s:%d", config.ConnConfig.Host, config.ConnConfig.Port)
-
-	db, err = pgxpool.NewWithConfig(ctx, config)
-	if err != nil {
-		return fmt.Errorf("unable to create connection pool: %v", err)
-	}
-
-	if err := db.Ping(ctx); err != nil {
-		return fmt.Errorf("unable to ping database: %v", err)
-	}
-
-	log.Println("Database connected successfully via transaction pooler")
-	return nil
+	// Health endpoint (debug only) — aman karena tidak mengembalikan secret
+	router.GET("/api/health", func(c *gin.Context) {
+		if os.Getenv("SUPABASE_DB_URL") == "" {
+			c.JSON(http.StatusServiceUnavailable, gin.H{"db": "env_missing"})
+			return
+		}
+		if db == nil {
+			c.JSON(http.StatusServiceUnavailable, gin.H{"db": "not_connected"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"db": "connected"})
+	})
 }
 
 // Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
