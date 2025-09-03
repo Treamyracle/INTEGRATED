@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"context"
@@ -34,7 +34,8 @@ func initDB(ctx context.Context) {
 }
 
 func setupRouter() *gin.Engine {
-	r := gin.Default()
+	r := gin.New()
+	r.Use(gin.Recovery(), gin.Logger())
 
 	r.GET("/", func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
@@ -44,16 +45,10 @@ func setupRouter() *gin.Engine {
 		var now time.Time
 		err := dbpool.QueryRow(ctx, "SELECT NOW()").Scan(&now)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Connected to Supabase!",
-			"time":    now,
-		})
+		c.JSON(http.StatusOK, gin.H{"message": "Connected to Supabase!", "time": now})
 	})
 
 	r.GET("/health", func(c *gin.Context) {
@@ -64,23 +59,16 @@ func setupRouter() *gin.Engine {
 		var dbTime time.Time
 		err := dbpool.QueryRow(ctx, "SELECT NOW()").Scan(&dbTime)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"status": "db_error",
-				"error":  err.Error(),
-			})
+			c.JSON(http.StatusInternalServerError, gin.H{"status": "db_error", "error": err.Error()})
 			return
 		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"status": "healthy",
-			"time":   dbTime,
-		})
+		c.JSON(http.StatusOK, gin.H{"status": "healthy", "time": dbTime})
 	})
 
 	return r
 }
 
-// Handler untuk Vercel
+// exported Handler untuk Vercel
 func Handler(w http.ResponseWriter, r *http.Request) {
 	if router == nil {
 		router = setupRouter()
