@@ -1,4 +1,4 @@
-package handler
+package main
 
 import (
 	"context"
@@ -18,7 +18,6 @@ var (
 	router *gin.Engine
 )
 
-// initDB initializes the database connection once (cold start)
 func initDB(ctx context.Context) {
 	once.Do(func() {
 		databaseUrl := os.Getenv("SUPABASE_DB_URL")
@@ -34,7 +33,6 @@ func initDB(ctx context.Context) {
 	})
 }
 
-// setupRouter sets up all routes
 func setupRouter() *gin.Engine {
 	r := gin.Default()
 
@@ -82,7 +80,7 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-// Handler is the entrypoint for Vercel
+// Handler untuk Vercel
 func Handler(w http.ResponseWriter, r *http.Request) {
 	if router == nil {
 		router = setupRouter()
