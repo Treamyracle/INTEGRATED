@@ -311,6 +311,7 @@ func init() {
 	// Set Gin to release mode
 	gin.SetMode(gin.ReleaseMode)
 
+	godotenv.Load()
 	// Initialize database with retry
 	maxRetries := 3
 	var err error
@@ -351,6 +352,8 @@ func init() {
 func initDBWithTimeout() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	godotenv.Load()
 
 	connStr := os.Getenv("SUPABASE_DB_URL")
 	if connStr == "" {
