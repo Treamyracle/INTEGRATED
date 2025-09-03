@@ -38,7 +38,7 @@ const Login = () => {
   useEffect(() => {
     if (window.google && window.google.accounts) {
       window.google.accounts.id.initialize({
-        client_id: '418414887688-u7fg0bshmafc4djrvcj9ueioil4kht2q.apps.googleusercontent.com',
+        client_id: '936262775162-d5i691155h5ojuoka01abipgf7fk2pjq.apps.googleusercontent.com',
         callback: handleCredentialResponse,
       });
       window.google.accounts.id.renderButton(
