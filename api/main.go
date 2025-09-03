@@ -311,10 +311,6 @@ func init() {
 	// Set Gin to release mode
 	gin.SetMode(gin.ReleaseMode)
 
-	godotenv.Load()
-
-	initDB()
-
 	// Initialize database with retry
 	maxRetries := 3
 	var err error
