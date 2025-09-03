@@ -424,17 +424,6 @@ func init() {
 	api.DELETE("/flowlist/:id", removeFlowItemHandler)
 
 	// Health endpoint (debug only) — aman karena tidak mengembalikan secret
-	router.GET("/api/health", func(c *gin.Context) {
-		if os.Getenv("SUPABASE_DB_URL") == "" {
-			c.JSON(http.StatusServiceUnavailable, gin.H{"db": "env_missing"})
-			return
-		}
-		if db == nil {
-			c.JSON(http.StatusServiceUnavailable, gin.H{"db": "not_connected"})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"db": "connected"})
-	})
 }
 
 // Handler adalah entry point yang akan dipanggil oleh Vercel sebagai fungsi serverless.
