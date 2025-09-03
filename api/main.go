@@ -335,6 +335,42 @@ func getFlowItemHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
+func healthHandler(c *gin.Context) {
+	env := os.Getenv("SUPABASE_DB_URL")
+	if env == "" {
+		c.JSON(http.StatusServiceUnavailable, gin.H{
+			"status": "error",
+			"env":    "SUPABASE_DB_URL not set",
+		})
+		return
+	}
+
+	if db == nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{
+			"status": "error",
+			"db":     "not connected",
+		})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	if err := db.Ping(ctx); err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{
+			"status": "error",
+			"db":     "ping failed",
+			"error":  err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "ok",
+		"env":    "SUPABASE_DB_URL set",
+		"db":     "connected",
+	})
+}
+
 func init() {
 	// Set Gin to release mode
 	gin.SetMode(gin.ReleaseMode)
@@ -378,6 +414,8 @@ func init() {
 	// Group API dan pasang middleware requireDB untuk endpoints yang membutuhkan DB
 	api := router.Group("/api")
 	api.Use(requireDB())
+
+	router.GET("/api/health", healthHandler)
 
 	api.POST("/signin", signInHandler)
 	api.GET("/flowlist", getFlowListHandler)
