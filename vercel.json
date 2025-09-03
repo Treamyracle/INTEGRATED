@@ -10,7 +10,7 @@
       }
     },
     {
-      "src": "api/main.go",
+      "src": "api/*.go",
       "use": "@vercel/go"
     }
   ],
