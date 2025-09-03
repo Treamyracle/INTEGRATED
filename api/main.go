@@ -96,7 +96,7 @@ func signInHandler(c *gin.Context) {
 	// Jika token tersedia, lakukan sign in via Google
 	if req.Token != "" {
 		// Validasi token Google menggunakan client ID Supabase Anda
-		payload, err := idtoken.Validate(ctx, req.Token, "418414887688-u7fg0bshmafc4djrvcj9ueioil4kht2q.apps.googleusercontent.com")
+		payload, err := idtoken.Validate(ctx, req.Token, "936262775162-d5i691155h5ojuoka01abipgf7fk2pjq.apps.googleusercontent.com")
 		if err != nil {
 			log.Printf("Google token validation error: %v", err)
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
