@@ -98,9 +98,9 @@ func setupRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery(), gin.Logger())
 
-	r.GET("/", rootHandler)
-	r.GET("/health", healthHandler)
-	r.POST("/signin", signinHandler)
+	r.GET("/api/", rootHandler)
+	r.GET("/api/health", healthHandler)
+	r.POST("/api/signin", signinHandler)
 
 	return r
 }
