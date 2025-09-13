@@ -4,12 +4,13 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"strings" // <-- Tambahkan import ini
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"golang.org/x/crypto/bcrypt" // Import library bcrypt
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -18,7 +19,7 @@ var (
 	router *gin.Engine
 )
 
-// --- Database Setup ---
+// ... (fungsi initDB, signupHandler, healthHandler tetap sama) ...
 func initDB(ctx context.Context) {
 	once.Do(func() {
 		databaseUrl := os.Getenv("SUPABASE_DB_URL")
@@ -34,12 +35,10 @@ func initDB(ctx context.Context) {
 	})
 }
 
-// --- Route Handlers ---
-
-// signupHandler untuk mendaftarkan pengguna baru
 func signupHandler(c *gin.Context) {
 	type SignupRequest struct {
 		Email    string `json:"email" binding:"required,email"`
+		Username string `json:"username" binding:"required"` // Tambahkan username saat signup
 		Password string `json:"password" binding:"required"`
 	}
 
@@ -49,7 +48,6 @@ func signupHandler(c *gin.Context) {
 		return
 	}
 
-	// Hash password sebelum disimpan
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
@@ -60,23 +58,29 @@ func signupHandler(c *gin.Context) {
 	defer cancel()
 	initDB(ctx)
 
-	// Simpan pengguna baru ke database
-	_, err = dbpool.Exec(ctx, "INSERT INTO users (email, password) VALUES ($1, $2)", req.Email, string(hashedPassword))
+	// Simpan pengguna baru dengan email DAN username
+	_, err = dbpool.Exec(ctx, "INSERT INTO users (email, username, password) VALUES ($1, $2, $3)", req.Email, req.Username, string(hashedPassword))
 	if err != nil {
-		// Kemungkinan email sudah ada (karena constraint UNIQUE)
-		c.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
+		// Cek error duplikat yang lebih spesifik jika perlu
+		if strings.Contains(err.Error(), "users_email_key") {
+			c.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
+		} else if strings.Contains(err.Error(), "users_username_key") {
+			c.JSON(http.StatusConflict, gin.H{"error": "Username already exists"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		}
 		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Signup successful"})
 }
 
-// signinHandler diperbarui untuk menggunakan email
+// --- signinHandler yang Diperbarui ---
 func signinHandler(c *gin.Context) {
-	// Request body sekarang menggunakan Email
+	// Request body sekarang menerima 'identifier'
 	type SigninRequest struct {
-		Email    string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required"`
+		Identifier string `json:"identifier" binding:"required"`
+		Password   string `json:"password" binding:"required"`
 	}
 
 	var req SigninRequest
@@ -90,19 +94,28 @@ func signinHandler(c *gin.Context) {
 	initDB(ctx)
 
 	var dbHashedPassword string
-	// Query database berdasarkan email, bukan username
-	err := dbpool.QueryRow(ctx, "SELECT password FROM users WHERE email=$1", req.Email).Scan(&dbHashedPassword)
+	var sqlQuery string
+
+	// Cek apakah identifier adalah email atau username
+	if strings.Contains(req.Identifier, "@") {
+		// Jika mengandung '@', kita anggap itu email
+		sqlQuery = "SELECT password FROM users WHERE email=$1"
+	} else {
+		// Jika tidak, kita anggap itu username
+		sqlQuery = "SELECT password FROM users WHERE username=$1"
+	}
+
+	// Jalankan query yang sesuai
+	err := dbpool.QueryRow(ctx, sqlQuery, req.Identifier).Scan(&dbHashedPassword)
 	if err != nil {
-		// Jika email tidak ditemukan atau ada error lain
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
-	// Bandingkan password yang diinput dengan hash dari database
+	// Bandingkan password
 	err = bcrypt.CompareHashAndPassword([]byte(dbHashedPassword), []byte(req.Password))
 	if err != nil {
-		// Jika password tidak cocok
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
