@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './style.css'; // Path diperbaiki untuk mengatasi error kompilasi
+import '../style.css'; // Path diperbaiki untuk mengatasi error kompilasi
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);

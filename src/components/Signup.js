@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './style.css'; // Path diperbaiki untuk mengatasi error kompilasi
+import '../style.css'; // Path diperbaiki untuk mengatasi error kompilasi
 
 const Signup = () => {
   const [passwordVisible, setPasswordVisible] = useState([false, false]);
