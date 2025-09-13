@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import '../style.css';
+import './style.css'; // Path diperbaiki untuk mengatasi error kompilasi
 
 const Signup = () => {
   const [passwordVisible, setPasswordVisible] = useState([false, false]);
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState(''); // State baru untuk username
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
 
@@ -17,31 +18,35 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Contoh: validasi password dan confirm
     if (password !== confirm) {
-      alert("Password tidak cocok");
+      alert("Passwords do not match!");
       return;
     }
-    // Misalnya endpoint signup di backend
+    
+    // PERUBAHAN: Kirim email, username, dan password
     fetch("/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, username, password }),
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Signup failed");
+          return res.json().then(err => { throw err; });
         }
         return res.json();
       })
       .then((data) => {
         console.log("Signup response:", data);
-        // Lanjutkan misalnya redirect ke halaman login
+        alert("Signup successful! Please proceed to login.");
+        // Arahkan pengguna ke halaman login, misalnya:
+        // window.location.href = '/login';
       })
       .catch((error) => {
         console.error("Error during signup:", error);
+        // Tampilkan pesan error spesifik dari backend
+        alert(`Signup failed: ${error.error || "An unknown error occurred"}`);
       });
   };
 
@@ -62,6 +67,20 @@ const Signup = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required 
+            />
+          </div>
+
+          {/* INPUT FIELD BARU UNTUK USERNAME */}
+          <label htmlFor="username">Username</label>
+          <div className="input-box">
+            <img src="/image/signin.svg" alt="User Icon" style={{ width: '16px' }}/>
+            <input 
+              type="text" 
+              id="username" 
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required 
             />
           </div>
@@ -126,3 +145,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

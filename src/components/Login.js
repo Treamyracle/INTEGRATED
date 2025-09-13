@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../style.css';
+import './style.css'; // Path diperbaiki untuk mengatasi error kompilasi
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState('');
+  // State ini sekarang bisa menampung email atau username
+  const [identifier, setIdentifier] = useState(''); 
   const [password, setPassword] = useState('');
 
   const togglePassword = () => {
@@ -12,26 +13,30 @@ const Login = () => {
 
   const handleLocalSignIn = (e) => {
     e.preventDefault();
-    // Menggunakan email sebagai username
+    // PERUBAHAN: Kirim 'identifier' yang bisa berupa email atau username
     fetch("/api/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: email, password: password }),
+      body: JSON.stringify({ identifier: identifier, password: password }),
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+           // Coba dapatkan pesan error dari backend
+           return res.json().then(err => { throw err; });
         }
         return res.json();
       })
       .then((data) => {
         console.log("Backend response (local sign in):", data);
-        // Lanjutkan proses login, simpan data user atau token session
+        alert("Login successful!");
+        // Di sini Anda bisa redirect pengguna atau menyimpan token
       })
       .catch((error) => {
         console.error("Error during local sign in:", error);
+        // Tampilkan pesan error spesifik dari backend
+        alert(`Login failed: ${error.error || "Invalid credentials"}`);
       });
   };
 
@@ -57,27 +62,8 @@ const Login = () => {
 
   const handleCredentialResponse = (response) => {
     console.log("Encoded JWT ID token: " + response.credential);
-  
-    fetch("/api/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: response.credential }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Backend response (Google sign in):", data);
-        // Lanjutkan proses login, misalnya simpan data user atau token session
-      })
-      .catch((error) => {
-        console.error("Error during Google Sign-In:", error);
-      });
+    // TODO: Anda perlu membuat handler di backend untuk Google Sign-In
+    // yang menerima token ini dan membuat/memverifikasi pengguna.
   };
 
   return (
@@ -88,15 +74,16 @@ const Login = () => {
       </div>
       <div className="form-container">
         <form onSubmit={handleLocalSignIn}>
-          <label htmlFor="email">Email Address</label>
+          {/* PERUBAHAN LABEL DAN INPUT */}
+          <label htmlFor="identifier">Email or Username</label>
           <div className="input-box">
-            <img src="/image/Vectoremail.svg" alt="Email Icon" />
+            <img src="/image/Vectoremail.svg" alt="User Icon" />
             <input 
               type="text" 
-              id="email" 
-              placeholder="Enter your email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="identifier" 
+              placeholder="Enter your email or username" 
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
               required
             />
           </div>
@@ -135,3 +122,4 @@ const Login = () => {
 };
 
 export default Login;
+
