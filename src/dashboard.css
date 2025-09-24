@@ -137,3 +137,53 @@
         margin: 0 auto;
     }
 }
+
+/* --- GAYA UNTUK PREVIEW PDF --- */
+.preview-container {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid #3a3a5e;
+  padding-top: 1.5rem;
+}
+
+.preview-container h4 {
+  margin-top: 0;
+  color: #a3a3c2;
+  text-align: center;
+}
+
+.canvas-wrapper {
+  background-color: #1a1a2e;
+  border: 1px solid #3a3a5e;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.canvas-wrapper canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+/* --- GAYA UNTUK PROGRESS BAR --- */
+.progress-container {
+  width: 100%;
+  background-color: #3a3a5e;
+  border-radius: 8px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%; /* Dimulai dari 0 */
+  height: 24px;
+  background-color: #4caf50;
+  text-align: center;
+  line-height: 24px;
+  color: white;
+  font-weight: bold;
+  transition: width 0.3s ease-in-out;
+}
