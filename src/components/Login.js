@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
-// PERUBAHAN: Import useNavigate untuk navigasi dan Link untuk tautan
-import { useNavigate, Link } from 'react-router-dom'; 
-import '../style.css';
+import React, { useState, useEffect, useCallback } from 'react'; // PERUBAHAN: Tambahkan import useCallback
+import { useNavigate, Link } from 'react-router-dom';
+import '../style.css'; // Sesuaikan path jika perlu
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [identifier, setIdentifier] = useState(''); 
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
-  
-  // PERUBAHAN: Inisialisasi hook useNavigate
   const navigate = useNavigate();
 
   const togglePassword = () => {
     setPasswordVisible(prev => !prev);
   };
 
-  // Handler untuk login lokal (email/username & password)
   const handleLocalSignIn = (e) => {
     e.preventDefault();
     fetch("/api/signin", {
@@ -31,11 +27,7 @@ const Login = () => {
       })
       .then((data) => {
         console.log("Login berhasil:", data);
-        // PERUBAHAN: Simpan token jika ada (opsional, tapi praktik yang baik)
-        // localStorage.setItem('token', data.token);
-        
-        // PERUBAHAN: Arahkan pengguna ke halaman dashboard
-        navigate('/dashboard'); 
+        navigate('/dashboard');
       })
       .catch((error) => {
         console.error("Error saat login:", error);
@@ -43,11 +35,10 @@ const Login = () => {
       });
   };
 
-  // Handler untuk response dari Google Sign-In
-  const handleCredentialResponse = (response) => {
+  // PERUBAHAN: Bungkus fungsi ini dengan useCallback
+  const handleCredentialResponse = useCallback((response) => {
     console.log("Encoded JWT ID token: " + response.credential);
-    // PERUBAHAN: Kirim token Google ke backend Anda untuk verifikasi
-    fetch("/api/auth/google", { // Pastikan Anda punya endpoint ini di backend
+    fetch("/api/auth/google", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: response.credential }),
@@ -60,16 +51,16 @@ const Login = () => {
     })
     .then(data => {
       console.log("Login Google berhasil:", data);
-      // PERUBAHAN: Arahkan ke dashboard setelah verifikasi backend berhasil
       navigate('/dashboard');
     })
     .catch(error => {
       console.error("Error saat login Google:", error);
       alert(`Login Google gagal: ${error.message || "Gagal memverifikasi pengguna"}`);
     });
-  };
+  }, [navigate]); // Tambahkan `Maps` sebagai dependensi untuk useCallback
 
   useEffect(() => {
+    // Pastikan script Google sudah dimuat sebelum menjalankan ini
     if (window.google && window.google.accounts) {
       window.google.accounts.id.initialize({
         client_id: '936262775162-d5i691155h5ojuoka01abipgf7fk2pjq.apps.googleusercontent.com',
@@ -80,9 +71,10 @@ const Login = () => {
         { theme: "outline", size: "large", width: 280, text: "signin_with", locale: "id_ID", shape: "rectangular" }
       );
     }
-  }, []);
+  // PERUBAHAN: Tambahkan `handleCredentialResponse` ke dependency array useEffect
+  }, [handleCredentialResponse]);
 
-
+  // Sisa kode JSX Anda tetap sama ...
   return (
     <div className="container">
       <div className="header">
@@ -91,6 +83,7 @@ const Login = () => {
       </div>
       <div className="form-container">
         <form onSubmit={handleLocalSignIn}>
+          {/* ... sisa form ... */}
           <label htmlFor="identifier">Email or Username</label>
           <div className="input-box">
             <img src="/image/Vectoremail.svg" alt="User Icon" />
@@ -128,7 +121,6 @@ const Login = () => {
         <div id="googleSignInDiv" style={{ display: 'flex', justifyContent: 'center', width: '100%' }}></div>
 
         <p className="signup-text">
-          {/* PERUBAHAN: Gunakan <Link> untuk navigasi SPA yang lebih cepat */}
           Don't have an account? <Link to="/signup">Sign Up.</Link>
         </p>
       </div>
