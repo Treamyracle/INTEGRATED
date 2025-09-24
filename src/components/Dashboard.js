@@ -24,7 +24,7 @@ const Dashboard = () => {
       setError('');
     } else {
       setSelectedFile(null);
-      setError('Silakan pilih file dengan format PDF.');
+      setError('Silakan pilih file dengan format PDF!');
     }
   };
 
