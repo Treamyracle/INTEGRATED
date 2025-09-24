@@ -52,7 +52,7 @@ const Dashboard = () => {
             
             const container = canvasRef.current.parentElement;
             const viewport = page.getViewport({ scale: 1.0 });
-            const scale = container.clientWidth / viewport.width;
+            const scale = container.clientWidth / viewport.width * 2.0; // Skala untuk resolusi lebih tinggi
             const scaledViewport = page.getViewport({ scale });
             
             canvasRef.current.height = scaledViewport.height;
