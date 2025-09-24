@@ -52,12 +52,12 @@ const Signup = () => {
   };
 
   return (
-    <div className="container">
-      <div className="header">
+    <div className="signup-container">
+      <div className="signup-header">
         <img src="/image/signup.svg" alt="User Icon" className="icon" />
         <h2>Sign Up!</h2>
       </div>
-      <div className="form-container">
+      <div className="signup-form">
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">Email Address</label>
           <div className="input-box">

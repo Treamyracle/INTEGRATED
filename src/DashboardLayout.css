@@ -26,13 +26,6 @@
   padding: 0;
 }
 
-/* html, body, #root {
-  height: 100%;
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--bg-light);
-  color: var(--text-dark);
-} */
-
 /* Layout */
 .dashboard-layout {
   display: flex;
