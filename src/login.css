@@ -1,119 +1,119 @@
 /* Login Page Style */
 .login-container {
-    height: 100vh;
-    width: 400px;
-    display: flex;
-    background: white;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    margin: auto;
+  width: 400px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: auto;
+}
+
+/* Wrapper untuk center di tengah layar */
+.login-page {
+  display: flex;
+  justify-content: center;   /* center horizontal */
+  align-items: center;       /* center vertical */
+  height: 100vh;             /* full screen */
+  background: #F9F7F3;       /* bisa kasih background */
 }
 
 .login-header {
-    background: linear-gradient(to bottom, #DF6060, #A31D1D);
-    text-align: center;
-    padding: 30px 0;
-    color: white;
-    border-radius: 15px 15px 0 0;
+  background: linear-gradient(to bottom, #DF6060, #A31D1D);
+  text-align: center;
+  padding: 30px 0;
+  color: white;
+  border-radius: 15px 15px 0 0;
 }
 
 .login-header img {
-    width: 50px;
-    margin-bottom: 10px;
+  width: 50px;
+  margin-bottom: 10px;
 }
 
 .login-header h2 {
-    margin: 0;
+  margin: 0;
 }
 
 .login-form {
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
+  padding: 20px;
 }
 
 .login-form label {
-    font-size: 14px;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .login-input-box {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background: #FDEDED;
-    border: 1px solid #F8BBD0;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #FDEDED;
+  border: 1px solid #F8BBD0;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .login-input-box img {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .login-input-box .pweye {
-    position: absolute;
-    right: 10px;
-    cursor: pointer;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
 }
 
 .login-input {
-    width: 100%;
-    border: none;
-    background: none;
-    outline: none;
-    font-size: 14px;
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 14px;
 }
 
 .login-btn {
-    width: 100%;
-    padding: 12px;
-    background: #D84040;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: #D84040;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .login-btn:hover {
-    background: #B71C1C;
+  background: #B71C1C;
 }
 
 .login-or {
-    text-align: center;
-    margin: 20px 0;
-    color: #666;
+  text-align: center;
+  margin: 20px 0;
+  color: #666;
 }
 
 #googleSignInDiv {
-    margin: 10px 0;
-    display: flex;
-    justify-content: center;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
 }
 
 .login-signup-text {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .login-signup-text a {
-    color: #A31D1D;
-    text-decoration: none;
-    font-weight: bold;
+  color: #A31D1D;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .login-signup-text a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

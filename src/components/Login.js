@@ -94,61 +94,65 @@ const Login = () => {
   }, [handleCredentialResponse]);
 
   return (
-    <div className="login-container">
-      <div className="login-header">
-        <img src="/image/signin.svg" alt="User Icon" className="icon" />
-        <h2>Sign In!</h2>
-      </div>
-      <div className="login-form">
-        <form onSubmit={handleLocalSignIn}>
-          <label htmlFor="identifier">Email or Username</label>
-          <div className="login-input-box">
-            <img src="/image/Vectoremail.svg" alt="User Icon" />
-            <input
-              type="text"
-              id="identifier"
-              className="login-input"
-              placeholder="Enter your email or username"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              required
-            />
-          </div>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-header">
+          <img src="/image/signin.svg" alt="User Icon" className="icon" />
+          <h2>Sign In!</h2>
+        </div>
+        <div className="login-form">
+          <form onSubmit={handleLocalSignIn}>
+            <label htmlFor="identifier">Email or Username</label>
+            <div className="login-input-box">
+              <img src="/image/Vectoremail.svg" alt="User Icon" />
+              <input
+                type="text"
+                id="identifier"
+                className="login-input"
+                placeholder="Enter your email or username"
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
+                required
+              />
+            </div>
 
-          <label htmlFor="password">Password</label>
-          <div className="login-input-box">
-            <img src="/image/Vectorlock.svg" alt="Lock Icon" />
-            <input
-              type={passwordVisible ? "text" : "password"}
-              id="password"
-              className="login-input"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <img
-              src={passwordVisible ? "/image/eye-close.svg" : "/image/eye.svg"}
-              className="pweye"
-              alt="Toggle Password"
-              onClick={togglePassword}
-            />
-          </div>
+            <label htmlFor="password">Password</label>
+            <div className="login-input-box">
+              <img src="/image/Vectorlock.svg" alt="Lock Icon" />
+              <input
+                type={passwordVisible ? "text" : "password"}
+                id="password"
+                className="login-input"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <img
+                src={
+                  passwordVisible ? "/image/eye-close.svg" : "/image/eye.svg"
+                }
+                className="pweye"
+                alt="Toggle Password"
+                onClick={togglePassword}
+              />
+            </div>
 
-          <button type="submit" className="login-btn">
-            Sign In
-          </button>
-        </form>
+            <button type="submit" className="login-btn">
+              Sign In
+            </button>
+          </form>
 
-        <p className="login-or">Or Sign In with Google</p>
-        <div
-          id="googleSignInDiv"
-          style={{ display: "flex", justifyContent: "center", width: "100%" }}
-        ></div>
+          <p className="login-or">Or Sign In with Google</p>
+          <div
+            id="googleSignInDiv"
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          ></div>
 
-        <p className="login-signup-text">
-          Don't have an account? <Link to="/signup">Sign Up.</Link>
-        </p>
+          <p className="login-signup-text">
+            Don't have an account? <Link to="/signup">Sign Up.</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
