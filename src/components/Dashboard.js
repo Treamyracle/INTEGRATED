@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Dashboard.css'; // <-- 1. IMPORT FILE CSS
 
 // URL API Backend Anda
 const API_URL = "https://pdf-to-image-production.up.railway.app/convert";
@@ -65,116 +66,7 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      {/* CSS STYLING DENGAN MEDIA QUERIES UNTUK RESPONSIVE */}
-      <style>{`
-        .dashboard-container {
-          background-color: #1a1a2e;
-          color: #e0e0e0;
-          min-height: 100vh;
-          padding: 2rem;
-          font-family: 'Segoe UI', 'Roboto', 'sans-serif';
-        }
-        .dashboard-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px solid #3a3a5e;
-          padding-bottom: 1rem;
-          margin-bottom: 2rem;
-          flex-wrap: wrap; /* Agar bisa wrap di mobile */
-        }
-        .welcome-message {
-          font-size: 2rem;
-          color: #ffffff;
-          margin: 0;
-        }
-        .content-area {
-          background-color: #1e2a4a;
-          padding: 2rem;
-          border-radius: 12px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-          max-width: 800px; /* Batasi lebar di layar besar */
-          margin: 0 auto; /* Tengahkankan konten */
-        }
-        .feature-title {
-          font-size: 1.5rem;
-          color: #a3a3c2;
-          margin-bottom: 1.5rem;
-          border-bottom: 1px solid #3a3a5e;
-          padding-bottom: 0.5rem;
-        }
-        .upload-box {
-          border: 2px dashed #3a3a5e;
-          border-radius: 8px;
-          padding: 2rem;
-          text-align: center;
-          cursor: pointer;
-          margin-bottom: 1rem;
-          transition: background-color 0.3s;
-        }
-        .upload-box:hover {
-          background-color: #2a3a6a;
-        }
-        .file-input { display: none; }
-        .convert-button {
-          background-color: #5e548e;
-          color: white;
-          border: none;
-          padding: 0.8rem 1.5rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 1rem;
-          font-weight: bold;
-          transition: background-color 0.3s;
-          margin-top: 1rem;
-          width: 100%; /* Lebar penuh di mobile */
-          max-width: 200px; /* Batasi lebar di desktop */
-        }
-        .convert-button:disabled {
-          background-color: #3a3a5e;
-          cursor: not-allowed;
-        }
-        .status-text { margin-top: 1rem; }
-        .loader { color: #a3a3c2; }
-        .error { color: #ff6b6b; font-weight: bold; }
-        .results-container { margin-top: 2rem; }
-        .image-preview {
-          width: 100%;
-          max-width: 400px; /* Batasi lebar gambar */
-          border: 2px solid #3a3a5e;
-          border-radius: 8px;
-          margin-top: 1rem;
-        }
-        .download-link {
-          display: inline-block;
-          margin-top: 1rem;
-          background-color: #2e8b57;
-          color: white;
-          padding: 0.5rem 1rem;
-          border-radius: 5px;
-          text-decoration: none;
-        }
-
-        /* --- RESPONSIVE STYLING UNTUK LAYAR KECIL --- */
-        @media (max-width: 768px) {
-          .dashboard-container {
-            padding: 1rem;
-          }
-          .dashboard-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-          }
-          .welcome-message {
-            font-size: 1.5rem;
-          }
-          .content-area {
-            padding: 1.5rem;
-          }
-        }
-      `}</style>
-
+    <>  
       <div className="dashboard-container">
         <header className="dashboard-header">
           <h1 className="welcome-message">Dashboard</h1>
