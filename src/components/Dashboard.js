@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../dashboard.css'; // Sesuaikan jika path berbeda
 
 // BARU: Cara impor yang lebih baik dan stabil, tidak lagi menggunakan CDN
-import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist';
-import worker from 'pdfjs-dist';
-GlobalWorkerOptions.workerSrc = worker;
+import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist/build/pdf';
+GlobalWorkerOptions.workerSrc = `.../public/pdf.worker.min.js`; 
 
 const API_URL = "https://pdf-to-image-production.up.railway.app/convert";
 
