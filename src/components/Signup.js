@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../style.css"; // Path diperbaiki untuk mengatasi error kompilasi
+import "../signup.css"; // Path diperbaiki untuk mengatasi error kompilasi
 import { Link } from "react-router-dom";
 
 const Signup = () => {
