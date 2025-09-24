@@ -1,166 +1,138 @@
-import React, { useState, useEffect, useRef } from "react";
-import "../dashboard.css"; // Sesuaikan path jika perlu
+import React, { useState, useEffect, useRef } from 'react';
+import '../dashboard.css'; // Sesuaikan jika path berbeda
 
-// BARU: Import library pdf.js
-import * as pdfjsLib from "pdfjs-dist/build/pdf";
-// BARU: Atur path untuk worker (diperlukan oleh pdf.js)
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// BARU: Cara impor yang lebih baik dan stabil, tidak lagi menggunakan CDN
+import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist/build/pdf';
+import worker from 'pdfjs-dist/build/pdf.worker.entry';
+GlobalWorkerOptions.workerSrc = worker;
 
-// URL API Backend Anda
 const API_URL = "https://pdf-to-image-production.up.railway.app/convert";
 
 const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [convertedImages, setConvertedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  // BARU: State untuk melacak progres upload
+  const [error, setError] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
-
-  // BARU: Ref untuk elemen canvas preview
   const canvasRef = useRef(null);
 
-  // PERUBAHAN: handleFileChange sekarang juga memicu render preview
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setConvertedImages([]); // Reset hasil konversi sebelumnya
-
-    if (file && file.type === "application/pdf") {
+    setConvertedImages([]);
+    if (file && file.type === 'application/pdf') {
       setSelectedFile(file);
-      setError("");
+      setError('');
     } else {
       setSelectedFile(null);
-      setError("Silakan pilih file dengan format PDF.");
+      setError('Silakan pilih file dengan format PDF.');
     }
   };
 
-  // BARU: useEffect untuk merender preview PDF saat file dipilih
   useEffect(() => {
-    if (!selectedFile || !canvasRef.current) return;
+    let isMounted = true; 
 
     const renderPdf = async () => {
-      // BARU: Tambahkan try...catch di sini
+      if (!selectedFile || !canvasRef.current) return;
+      
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
+
       try {
         const fileReader = new FileReader();
-
-        fileReader.onload = async function () {
+        fileReader.onload = async function() {
+          if (!isMounted) return;
           try {
             const typedarray = new Uint8Array(this.result);
-            const loadingTask = pdfjsLib.getDocument(typedarray);
+            const loadingTask = getDocument(typedarray);
             const pdf = await loadingTask.promise;
-            const page = await pdf.getPage(1); // Ambil halaman pertama
-
-            const canvas = canvasRef.current;
-            if (!canvas) return; // Pastikan canvas masih ada
-
-            const context = canvas.getContext("2d");
-
-            // Atur skala agar pas dengan lebar container
-            const container = canvas.parentElement;
-            if (!container) return;
+            const page = await pdf.getPage(1);
+            
+            if (!canvasRef.current || !isMounted) return;
+            
+            const container = canvasRef.current.parentElement;
             const viewport = page.getViewport({ scale: 1.0 });
             const scale = container.clientWidth / viewport.width;
-            const scaledViewport = page.getViewport({ scale: scale });
+            const scaledViewport = page.getViewport({ scale });
+            
+            canvasRef.current.height = scaledViewport.height;
+            canvasRef.current.width = scaledViewport.width;
 
-            canvas.height = scaledViewport.height;
-            canvas.width = scaledViewport.width;
-
-            // Render halaman PDF ke canvas
             await page.render({
               canvasContext: context,
-              viewport: scaledViewport,
+              viewport: scaledViewport
             }).promise;
-            console.log("PDF preview berhasil dirender.");
           } catch (renderError) {
-            console.error(
-              "Error saat merender PDF di dalam onload:",
-              renderError
-            );
-            setError("Gagal menampilkan preview PDF. File mungkin rusak.");
+            console.error("Error saat merender PDF:", renderError);
+            if (isMounted) setError("Gagal menampilkan preview. File mungkin rusak atau tidak didukung.");
           }
         };
-
-        fileReader.onerror = function () {
-          console.error("Error saat membaca file:", fileReader.error);
-          setError("Gagal membaca file PDF.");
-        };
-
         fileReader.readAsArrayBuffer(selectedFile);
       } catch (outerError) {
-        console.error("Error di luar FileReader:", outerError);
-        setError("Terjadi error saat persiapan preview.");
+        console.error("Error persiapan FileReader:", outerError);
+        if (isMounted) setError("Terjadi error saat memuat file.");
       }
     };
-
+    
     renderPdf();
-  }, [selectedFile, setError]);
 
-  // PERUBAHAN: handleConvert sekarang menggunakan XMLHttpRequest untuk progress tracking
+    return () => {
+      isMounted = false;
+    };
+
+  }, [selectedFile]);
+
   const handleConvert = () => {
     if (!selectedFile) {
-      setError("Tidak ada file PDF yang dipilih.");
+      setError('Tidak ada file PDF yang dipilih.');
       return;
     }
     setIsLoading(true);
-    setError("");
+    setError('');
     setConvertedImages([]);
-    setUploadProgress(0); // Reset progress bar
+    setUploadProgress(0);
 
     const formData = new FormData();
-    formData.append("file", selectedFile);
-
+    formData.append('file', selectedFile);
     const xhr = new XMLHttpRequest();
 
-    // Event listener untuk progres upload
-    xhr.upload.addEventListener("progress", (event) => {
+    xhr.upload.addEventListener('progress', (event) => {
       if (event.lengthComputable) {
-        const percentComplete = (event.loaded / event.total) * 100;
-        setUploadProgress(percentComplete);
+        setUploadProgress((event.loaded / event.total) * 100);
       }
     });
 
-    // Event listener saat request selesai
-    xhr.onload = function () {
+    xhr.onload = function() {
       setIsLoading(false);
       if (xhr.status === 200) {
-        const contentType = xhr.getResponseHeader("content-type");
+        const contentType = xhr.getResponseHeader('content-type');
         const blob = xhr.response;
 
-        if (contentType && contentType.includes("image/png")) {
-          const imageUrl = URL.createObjectURL(blob);
-          setConvertedImages([
-            {
-              url: imageUrl,
-              name: `${selectedFile.name.replace(".pdf", "")}_page_1.png`,
-            },
-          ]);
-        } else if (contentType && contentType.includes("application/zip")) {
-          const downloadUrl = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = downloadUrl;
-          a.download = "converted_images.zip";
+        if (contentType?.includes('image/png')) {
+          setConvertedImages([{ url: URL.createObjectURL(blob), name: `${selectedFile.name.replace('.pdf', '')}_page_1.png` }]);
+        } else if (contentType?.includes('application/zip')) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'converted_images.zip';
           document.body.appendChild(a);
           a.click();
           a.remove();
-          URL.revokeObjectURL(downloadUrl);
-          alert("File ZIP berhasil diunduh!");
+          alert('File ZIP berhasil diunduh!');
         } else {
-          setError("Format respons tidak dikenali dari server.");
+          setError('Format respons tidak dikenali dari server.');
         }
       } else {
         setError(`Gagal melakukan konversi. Status: ${xhr.status}`);
       }
     };
 
-    // Event listener untuk error jaringan
-    xhr.onerror = function () {
+    xhr.onerror = function() {
       setIsLoading(false);
-      setError("Terjadi error jaringan saat mengunggah file.");
+      setError('Terjadi error jaringan saat mengunggah file.');
     };
 
-    xhr.open("POST", API_URL, true);
-    xhr.responseType = "blob"; // Penting agar bisa menangani file PNG/ZIP
+    xhr.open('POST', API_URL, true);
+    xhr.responseType = 'blob';
     xhr.send(formData);
   };
 
@@ -173,19 +145,16 @@ const Dashboard = () => {
         <div className="content-area">
           <h2 className="feature-title">PDF to PNG Converter</h2>
           <label htmlFor="pdf-upload" className="upload-box">
-            {selectedFile
-              ? `File: ${selectedFile.name}`
-              : "Klik atau jatuhkan file PDF di sini"}
+            {selectedFile ? `File: ${selectedFile.name}` : 'Klik atau jatuhkan file PDF di sini'}
           </label>
-          <input
+          <input 
             id="pdf-upload"
-            type="file"
+            type="file" 
             accept=".pdf"
             onChange={handleFileChange}
             className="file-input"
           />
-
-          {/* BARU: Area untuk preview PDF */}
+          
           {selectedFile && (
             <div className="preview-container">
               <h4>Preview Halaman Pertama:</h4>
@@ -195,44 +164,32 @@ const Dashboard = () => {
             </div>
           )}
 
-          <button
-            onClick={handleConvert}
+          <button 
+            onClick={handleConvert} 
             disabled={!selectedFile || isLoading}
             className="convert-button"
           >
-            {isLoading ? "Mengonversi..." : "Konversi ke PNG"}
+            {isLoading ? 'Mengonversi...' : 'Konversi ke PNG'}
           </button>
-
-          {/* BARU: Progress bar untuk upload */}
+          
           {isLoading && (
             <div className="progress-container">
-              <div
-                className="progress-bar"
-                style={{ width: `${uploadProgress}%` }}
-              >
+              <div className="progress-bar" style={{ width: `${uploadProgress}%` }}>
                 {Math.round(uploadProgress)}%
               </div>
             </div>
           )}
-
+          
           {error && <p className="status-text error">{error}</p>}
-
+          
           {convertedImages.length > 0 && (
             <div className="results-container">
               <h3>Hasil Konversi:</h3>
               {convertedImages.map((image, index) => (
                 <div key={index}>
-                  <img
-                    src={image.url}
-                    alt={`Converted Page ${index + 1}`}
-                    className="image-preview"
-                  />
+                  <img src={image.url} alt={`Converted Page ${index + 1}`} className="image-preview"/>
                   <br />
-                  <a
-                    href={image.url}
-                    download={image.name}
-                    className="download-link"
-                  >
+                  <a href={image.url} download={image.name} className="download-link">
                     Unduh Gambar
                   </a>
                 </div>
