@@ -194,7 +194,7 @@ html, body, #root {
 
 /* ================================
    Responsive
-   ================================ */
+   =============================== */
 @media (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;
