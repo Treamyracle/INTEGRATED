@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"os"
 	"strings" // <-- Tambahkan import ini
@@ -76,8 +77,8 @@ func signupHandler(c *gin.Context) {
 }
 
 // --- signinHandler yang Diperbarui ---
+// --- signinHandler yang Diperbarui dengan Logging ---
 func signinHandler(c *gin.Context) {
-	// Request body sekarang menerima 'identifier'
 	type SigninRequest struct {
 		Identifier string `json:"identifier" binding:"required"`
 		Password   string `json:"password" binding:"required"`
@@ -89,6 +90,9 @@ func signinHandler(c *gin.Context) {
 		return
 	}
 
+	// -- LOGGING DIMULAI --
+	log.Printf("Mencoba login dengan identifier: %s", req.Identifier)
+
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 	defer cancel()
 	initDB(ctx)
@@ -96,29 +100,36 @@ func signinHandler(c *gin.Context) {
 	var dbHashedPassword string
 	var sqlQuery string
 
-	// Cek apakah identifier adalah email atau username
 	if strings.Contains(req.Identifier, "@") {
-		// Jika mengandung '@', kita anggap itu email
 		sqlQuery = "SELECT password FROM users WHERE email=$1"
 	} else {
-		// Jika tidak, kita anggap itu username
 		sqlQuery = "SELECT password FROM users WHERE username=$1"
 	}
 
-	// Jalankan query yang sesuai
+	log.Printf("Menjalankan query: %s", sqlQuery)
+
 	err := dbpool.QueryRow(ctx, sqlQuery, req.Identifier).Scan(&dbHashedPassword)
 	if err != nil {
+		// Jika error di sini, berarti user tidak ditemukan
+		log.Printf("Error saat mencari user: %v", err)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
+
+	// PENTING: Cetak hash yang diambil dari DB
+	log.Printf("Hash dari DB: %s", dbHashedPassword)
+	log.Printf("Panjang Hash dari DB: %d", len(dbHashedPassword))
 
 	// Bandingkan password
 	err = bcrypt.CompareHashAndPassword([]byte(dbHashedPassword), []byte(req.Password))
 	if err != nil {
+		// Jika error di sini, berarti password salah
+		log.Printf("Error perbandingan bcrypt: %v", err)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
+	log.Println("Perbandingan bcrypt BERHASIL!")
 	c.JSON(http.StatusOK, gin.H{"message": "Signin successful"})
 }
 
