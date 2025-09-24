@@ -12,16 +12,28 @@ const DashboardLayout = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/dashboard">📊 Dashboard</Link>
+              <span>📊 Dashboard</span>
+              <Link to="/dashboard">
+                <button className="go-btn">Go</button>
+              </Link>
             </li>
             <li>
-              <Link to="/pdfconverter">📄 PDF to PNG</Link>
+              <span>📄 PDF to PNG</span>
+              <Link to="/pdfconverter">
+                <button className="go-btn">Go</button>
+              </Link>
             </li>
             <li>
-              <Link to="/files">📁 File Manager</Link>
+              <span>📁 File Manager</span>
+              <Link to="/files">
+                <button className="go-btn">Go</button>
+              </Link>
             </li>
             <li>
-              <Link to="/settings">⚙️ Settings</Link>
+              <span>⚙️ Settings</span>
+              <Link to="/settings">
+                <button className="go-btn">Go</button>
+              </Link>
             </li>
           </ul>
         </nav>
