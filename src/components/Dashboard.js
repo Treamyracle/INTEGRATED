@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Dashboard.css'; // <-- 1. IMPORT FILE CSS
+import './dashboard.css'; // <-- 1. IMPORT FILE CSS
 
 // URL API Backend Anda
 const API_URL = "https://pdf-to-image-production.up.railway.app/convert";
