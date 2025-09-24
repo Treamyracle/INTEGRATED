@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../dashboard.css'; // Sesuaikan jika path berbeda
+import '../PdfConverter.css'; // Sesuaikan jika path berbeda
 
 // BARU: Cara impor yang lebih baik dan stabil, tidak lagi menggunakan CDN
 import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist/build/pdf';
@@ -8,7 +8,7 @@ GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
 const API_URL = "https://pdf-to-image-production.up.railway.app/convert";
 
-const Dashboard = () => {
+const PdfConverter = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [convertedImages, setConvertedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -202,4 +202,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default PdfConverter;
