@@ -1,11 +1,16 @@
-/* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 .dashboard-layout {
   display: flex;
   height: 100vh;
-  background-color: #F9F7F3;
   font-family: 'Poppins', sans-serif;
+  background: #F9F7F3;
 }
 
 /* Sidebar */
@@ -13,16 +18,13 @@
   width: 240px;
   background: linear-gradient(to bottom, #DF6060, #A31D1D);
   color: white;
-  padding: 20px;
+  padding: 20px 15px;
   display: flex;
   flex-direction: column;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 4px 0 8px rgba(0,0,0,0.1);
 }
 
 .logo {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 30px;
   text-align: center;
@@ -30,7 +32,6 @@
 
 .sidebar ul {
   list-style: none;
-  padding: 0;
 }
 
 .sidebar li {
@@ -50,7 +51,57 @@
 
 .sidebar a:hover {
   background: rgba(255,255,255,0.2);
-  color: #fff;
+}
+
+/* Main Section (Header + Content) */
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 400px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.status.live {
+  color: green;
+  font-weight: 600;
+}
+
+.create-btn {
+  background: #DF6060;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.create-btn:hover {
+  background: #A31D1D;
 }
 
 /* Main Content */
@@ -58,8 +109,32 @@
   flex: 1;
   padding: 25px;
   background: #fff;
-  border-radius: 20px;
-  margin: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 2px solid #A31D1D;
+  }
+
+  .sidebar ul {
+    display: flex;
+    gap: 15px;
+  }
+
+  .sidebar li {
+    margin: 0;
+  }
+
+  .main-section {
+    flex: 1;
+  }
 }

@@ -1,26 +1,48 @@
-// src/components/DashboardLayout.js
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import "../DashboardLayout.css";
+import { Outlet } from "react-router-dom";
+import "./DashboardLayout.css";
+import { Link } from "react-router-dom";
 
 const DashboardLayout = () => {
   return (
     <div className="dashboard-layout">
       {/* Sidebar */}
       <aside className="sidebar">
-        <h2 className="logo">My Tools</h2>
+        <div className="logo">🔥 My Tools</div>
         <nav>
           <ul>
-            <li><Link to="/pdfconverter">📄 PDF to PNG</Link></li>
-            {/* Nanti tinggal tambah fitur lain */}
+            <li>
+              <Link to="/dashboard">📊 Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/pdfconverter">📄 PDF to PNG</Link>
+            </li>
+            <li>
+              <Link to="/files">📁 File Manager</Link>
+            </li>
+            <li>
+              <Link to="/settings">⚙️ Settings</Link>
+            </li>
           </ul>
         </nav>
       </aside>
 
       {/* Main Content */}
-      <main className="main-content">
-        <Outlet /> {/* Tempat render fitur */}
-      </main>
+      <div className="main-section">
+        {/* Header */}
+        <header className="header">
+          <input type="text" className="search-bar" placeholder="Search..." />
+          <div className="header-right">
+            <span className="status live">● Live</span>
+            <button className="create-btn">+ Create</button>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="main-content">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };
