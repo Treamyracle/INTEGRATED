@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../style.css'; // Path diperbaiki untuk mengatasi error kompilasi
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const [passwordVisible, setPasswordVisible] = useState([false, false]);
@@ -137,7 +138,7 @@ const Signup = () => {
         </div>
 
         <p className="signup-text">
-          Already have an account? <a href="/login">Sign In.</a>
+          Already have an account? <Link to="/login">Sign In.</Link>
         </p>
       </div>
     </div>
