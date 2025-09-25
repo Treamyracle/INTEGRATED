@@ -6,7 +6,7 @@ import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist/build/pdf';
 
 GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
-const API_URL = "https://pdf-to-image-production.up.railway.app/convert";
+const API_URL = "https://pdf-to-image-be.vercel.app/convert";
 
 const PdfConverter = () => {
   const [selectedFile, setSelectedFile] = useState(null);
