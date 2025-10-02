@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings" // <-- Tambahkan import ini
+	"strings"
 	"sync"
 	"time"
 
@@ -20,7 +20,9 @@ var (
 	router *gin.Engine
 )
 
-// ... (fungsi initDB, signupHandler, healthHandler tetap sama) ...
+// =====================
+// Init DB Pool Aman
+// =====================
 func initDB(ctx context.Context) {
 	once.Do(func() {
 		databaseUrl := os.Getenv("SUPABASE_DB_URL")
@@ -28,18 +30,30 @@ func initDB(ctx context.Context) {
 			panic("SUPABASE_DB_URL is not set")
 		}
 
-		pool, err := pgxpool.New(ctx, databaseUrl)
+		config, err := pgxpool.ParseConfig(databaseUrl)
+		if err != nil {
+			panic("Failed to parse DB config: " + err.Error())
+		}
+
+		// Opsional: batasi max connection
+		config.MaxConns = 10
+
+		pool, err := pgxpool.NewWithConfig(ctx, config)
 		if err != nil {
 			panic("Unable to create connection pool: " + err.Error())
 		}
 		dbpool = pool
+		log.Println("Database pool siap digunakan")
 	})
 }
 
+// =====================
+// Signup Handler
+// =====================
 func signupHandler(c *gin.Context) {
 	type SignupRequest struct {
 		Email    string `json:"email" binding:"required,email"`
-		Username string `json:"username" binding:"required"` // Tambahkan username saat signup
+		Username string `json:"username" binding:"required"`
 		Password string `json:"password" binding:"required"`
 	}
 
@@ -59,10 +73,8 @@ func signupHandler(c *gin.Context) {
 	defer cancel()
 	initDB(ctx)
 
-	// Simpan pengguna baru dengan email DAN username
 	_, err = dbpool.Exec(ctx, "INSERT INTO users (email, username, password) VALUES ($1, $2, $3)", req.Email, req.Username, string(hashedPassword))
 	if err != nil {
-		// Cek error duplikat yang lebih spesifik jika perlu
 		if strings.Contains(err.Error(), "users_email_key") {
 			c.JSON(http.StatusConflict, gin.H{"error": "Email already exists"})
 		} else if strings.Contains(err.Error(), "users_username_key") {
@@ -76,8 +88,9 @@ func signupHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Signup successful"})
 }
 
-// --- signinHandler yang Diperbarui ---
-// --- signinHandler yang Diperbarui dengan Logging ---
+// =====================
+// Signin Handler Aman
+// =====================
 func signinHandler(c *gin.Context) {
 	type SigninRequest struct {
 		Identifier string `json:"identifier" binding:"required"`
@@ -90,7 +103,6 @@ func signinHandler(c *gin.Context) {
 		return
 	}
 
-	// -- LOGGING DIMULAI --
 	log.Printf("Mencoba login dengan identifier: %s", req.Identifier)
 
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
@@ -108,23 +120,18 @@ func signinHandler(c *gin.Context) {
 
 	log.Printf("Menjalankan query: %s", sqlQuery)
 
+	// Gunakan QueryRow biasa → simple protocol, tidak clash statement
 	err := dbpool.QueryRow(ctx, sqlQuery, req.Identifier).Scan(&dbHashedPassword)
 	if err != nil {
-		// Jika error di sini, berarti user tidak ditemukan
-		log.Printf("Error saat mencari user: %v", err)
+		log.Printf("User tidak ditemukan atau error: %v", err)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
-	// PENTING: Cetak hash yang diambil dari DB
-	log.Printf("Hash dari DB: %s", dbHashedPassword)
-	log.Printf("Panjang Hash dari DB: %d", len(dbHashedPassword))
-
 	// Bandingkan password
 	err = bcrypt.CompareHashAndPassword([]byte(dbHashedPassword), []byte(req.Password))
 	if err != nil {
-		// Jika error di sini, berarti password salah
-		log.Printf("Error perbandingan bcrypt: %v", err)
+		log.Printf("Password tidak cocok: %v", err)
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
@@ -133,6 +140,9 @@ func signinHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Signin successful"})
 }
 
+// =====================
+// Health Handler
+// =====================
 func healthHandler(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 2*time.Second)
 	defer cancel()
@@ -147,12 +157,13 @@ func healthHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "healthy", "time": dbTime})
 }
 
-// --- Setup Router ---
+// =====================
+// Setup Router
+// =====================
 func setupRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery(), gin.Logger())
 
-	// Tambahkan route baru untuk signup
 	r.POST("/api/signup", signupHandler)
 	r.POST("/api/signin", signinHandler)
 	r.GET("/api/health", healthHandler)
@@ -160,7 +171,9 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-// --- Vercel Handler ---
+// =====================
+// Vercel Handler
+// =====================
 func Handler(w http.ResponseWriter, r *http.Request) {
 	if router == nil {
 		router = setupRouter()
