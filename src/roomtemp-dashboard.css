@@ -1,215 +1,199 @@
-/* Unique prefixed CSS for RoomTempDashboard (prefix: rt-) */
-/* Import same Poppins font for consistent look */
+/* roomtemp-dashboard.css - prefiks "rt-" agar unik */
+/* Import font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-:root {
-  --rt-primary-light: #DF6060;
-  --rt-primary-dark: #A31D1D;
-  --rt-bg: #F9F7F3;
-  --rt-surface: #FFFFFF;
-  --rt-text: #222222;
-  --rt-muted: #8b8b8b;
-  --rt-border: #E6E6E6;
-  --rt-success: #66BB6A;
-  --rt-danger: #e57373;
-  --rt-radius: 12px;
+:root{
+  --rt-primary-light:#DF6060;
+  --rt-primary-dark:#A31D1D;
+  --rt-bg:#F9F7F3;
+  --rt-surface:#FFFFFF;
+  --rt-text:#222222;
+  --rt-muted:#8b8b8b;
+  --rt-border:#E6E6E6;
+  --rt-success:#66BB6A;
+  --rt-danger:#e57373;
+  --rt-radius:12px;
   --rt-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-/* Layout container */
-.rt-dashboard-container {
-  font-family: 'Poppins', sans-serif;
-  max-width: 980px;
-  margin: 20px auto;
-  padding: 18px;
-  background: var(--rt-bg);
-  color: var(--rt-text);
+.rt-dashboard-container{
+  font-family:'Poppins',sans-serif;
+  max-width:980px;
+  margin:20px auto;
+  padding:18px;
+  background:var(--rt-bg);
+  color:var(--rt-text);
 }
 
-/* Header */
-.rt-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
+.rt-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
 }
 
-.rt-title {
-  font-size: 1.6rem;
-  margin: 0;
-  color: var(--rt-primary-dark);
-  font-weight: 600;
+.rt-title{
+  font-size:1.6rem;
+  margin:0;
+  color:var(--rt-primary-dark);
+  font-weight:600;
 }
 
-.rt-subtitle {
-  margin: 2px 0 0 0;
-  color: var(--rt-muted);
-  font-size: 0.9rem;
+.rt-subtitle{
+  margin:2px 0 0 0;
+  color:var(--rt-muted);
+  font-size:0.9rem;
 }
 
-/* Status pill */
-.rt-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.04);
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--rt-muted);
+.rt-status-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,0.04);
+  background:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04);
+  font-weight:600;
+  font-size:0.9rem;
+  color:var(--rt-muted);
 }
 
-.rt-status-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--rt-muted);
-  box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
+.rt-status-dot{
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--rt-muted);
+  box-shadow:0 0 0 4px rgba(0,0,0,0.03);
 }
 
-.rt-status-text { font-weight:600; }
+.rt-status-loading .rt-status-dot{ background:#f0ad4e; }
+.rt-status-ok .rt-status-dot{ background:var(--rt-success); }
+.rt-status-error .rt-status-dot{ background:var(--rt-danger); }
+.rt-status-idle .rt-status-dot{ background:var(--rt-muted); }
 
-/* status variants */
-.rt-status-loading .rt-status-dot { background: #f0ad4e; }
-.rt-status-ok .rt-status-dot { background: var(--rt-success); }
-.rt-status-error .rt-status-dot { background: var(--rt-danger); }
-.rt-status-idle .rt-status-dot { background: var(--rt-muted); }
-
-/* Card */
-.rt-card {
-  background: var(--rt-surface);
-  border-radius: var(--rt-radius);
-  padding: 18px;
-  box-shadow: var(--rt-shadow);
-  border: 1px solid var(--rt-border);
+.rt-card{
+  background:var(--rt-surface);
+  border-radius:var(--rt-radius);
+  padding:18px;
+  box-shadow:var(--rt-shadow);
+  border:1px solid var(--rt-border);
 }
 
-/* Main row layout */
-.rt-main-row {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+.rt-main-row{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
 }
 
-/* Temperature column */
-.rt-temp-col {
-  flex: 1 1 320px;
-  min-width: 220px;
+.rt-temp-col{
+  flex:1 1 320px;
+  min-width:220px;
 }
 
-.rt-temp-label {
-  color: var(--rt-primary-light);
-  font-weight: 600;
-  margin-bottom: 6px;
+.rt-temp-label{
+  color:var(--rt-primary-light);
+  font-weight:600;
+  margin-bottom:6px;
 }
 
-.rt-temp-value {
-  font-size: 56px;
-  font-weight: 700;
-  color: var(--rt-primary-dark);
-  line-height: 1;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
+.rt-temp-value{
+  font-size:56px;
+  font-weight:700;
+  color:var(--rt-primary-dark);
+  line-height:1;
+  display:flex;
+  align-items:baseline;
+  gap:8px;
 }
 
-.rt-temp-unit {
-  font-size: 20px;
-  color: var(--rt-muted);
-  font-weight: 600;
+.rt-temp-unit{
+  font-size:20px;
+  color:var(--rt-muted);
+  font-weight:600;
 }
 
-/* Humidity column */
-.rt-hum-col {
-  width: 280px;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+.rt-hum-col{
+  width:280px;
+  min-width:200px;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
 }
 
-.rt-hum-label {
-  color: var(--rt-primary-light);
-  font-weight: 600;
-  margin-bottom: 6px;
+.rt-hum-label{
+  color:var(--rt-primary-light);
+  font-weight:600;
+  margin-bottom:6px;
 }
 
-.rt-hum-value {
-  font-size: 34px;
-  font-weight: 700;
-  color: #237b8f;
-  margin-bottom: 8px;
+.rt-hum-value{
+  font-size:34px;
+  font-weight:700;
+  color:#237b8f;
+  margin-bottom:8px;
 }
 
-.rt-hum-unit { font-size: 16px; color: var(--rt-muted); font-weight:600; }
+.rt-hum-unit{ font-size:16px; color:var(--rt-muted); font-weight:600; }
 
-/* Divider */
-.rt-divider {
-  width: 1px;
-  height: 120px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.03), rgba(0,0,0,0.06));
-  border-radius: 2px;
-  margin: 0 8px;
+.rt-divider{
+  width:1px;
+  height:120px;
+  background:linear-gradient(to bottom, rgba(0,0,0,0.03), rgba(0,0,0,0.06));
+  border-radius:2px;
+  margin:0 8px;
 }
 
-/* Humidity bar */
-.rt-hum-bar-wrapper { margin-top: 6px; }
-.rt-hum-bar {
-  width: 100%;
-  height: 14px;
-  background: #f1f4f5;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--rt-border);
+.rt-hum-bar-wrapper{ margin-top:6px; }
+.rt-hum-bar{
+  width:100%;
+  height:14px;
+  background:#f1f4f5;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--rt-border);
 }
-.rt-hum-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #66BB6A, #2E7D32);
-  transition: width 0.6s ease;
-}
-
-.rt-hum-caption { font-size: 12px; color: var(--rt-muted); margin-top: 6px; }
-
-/* Error note */
-.rt-error-note {
-  margin-top: 12px;
-  color: #b00020;
-  background: rgba(224, 97, 97, 0.06);
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(176, 0, 32, 0.08);
-  font-weight: 600;
+.rt-hum-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg,#66BB6A,#2E7D32);
+  transition:width 0.6s ease;
 }
 
-/* Footer */
-.rt-footer {
-  margin-top: 12px;
-  display: flex;
-  justify-content: flex-end;
-  color: var(--rt-muted);
-  font-size: 12px;
+.rt-hum-caption{ font-size:12px; color:var(--rt-muted); margin-top:6px; }
+
+.rt-error-note{
+  margin-top:12px;
+  color:#b00020;
+  background:rgba(224,97,97,0.06);
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid rgba(176,0,32,0.08);
+  font-weight:600;
 }
 
-/* API small text */
-.rt-footer-api {
-  font-family: monospace;
-  color: #6b6b6b;
-  background: #fafafa;
-  padding: 2px 6px;
-  border-radius: 6px;
-  margin-left: 6px;
+.rt-footer{
+  margin-top:12px;
+  display:flex;
+  justify-content:flex-end;
+  color:var(--rt-muted);
+  font-size:12px;
 }
 
-/* Responsive */
-@media (max-width: 720px) {
-  .rt-main-row { flex-direction: column; align-items: stretch; }
-  .rt-divider { display:none; }
-  .rt-temp-value { font-size: 48px; }
-  .rt-hum-value { font-size: 28px; }
+.rt-footer-api{
+  font-family:monospace;
+  color:#6b6b6b;
+  background:#fafafa;
+  padding:2px 6px;
+  border-radius:6px;
+  margin-left:6px;
+}
+
+@media (max-width:720px){
+  .rt-main-row{ flex-direction:column; align-items:stretch; }
+  .rt-divider{ display:none; }
+  .rt-temp-value{ font-size:48px; }
+  .rt-hum-value{ font-size:28px; }
 }

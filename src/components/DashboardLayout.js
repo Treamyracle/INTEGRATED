@@ -1,57 +1,64 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import "../DashboardLayout.css";
-import { Link } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
+import "../DashboardLayout.css"; // sesuaikan path jika diperlukan
 
 const DashboardLayout = () => {
   return (
-    <div className="dashboard-layout">
+    <div className="dl-layout">
       {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="logo">🔥 My Tools</div>
-        <nav>
+      <aside className="dl-sidebar">
+        <div className="dl-logo">🔥 My Tools</div>
+
+        <nav className="dl-nav">
           <ul>
             <li>
-              <span>📊 Dashboard</span>
+              <span>📊 Overview</span>
               <Link to="/dashboard">
-                <button className="go-btn">Go</button>
+                <button className="dl-go-btn">Go</button>
               </Link>
             </li>
+
+            <li>
+              <span>🌡 Room Temp</span>
+              <Link to="/roomtemp">
+                <button className="dl-go-btn">Go</button>
+              </Link>
+            </li>
+
             <li>
               <span>📄 PDF to PNG</span>
               <Link to="/pdfconverter">
-                <button className="go-btn">Go</button>
+                <button className="dl-go-btn">Go</button>
               </Link>
             </li>
-            <li>
-              <span>📁 File Manager</span>
-              <Link to="/files">
-                <button className="go-btn">Go</button>
-              </Link>
-            </li>
+
             <li>
               <span>⚙️ Settings</span>
               <Link to="/settings">
-                <button className="go-btn">Go</button>
+                <button className="dl-go-btn">Go</button>
               </Link>
             </li>
           </ul>
         </nav>
+
+        <div className="dl-sidebar-footer">
+          <small>v1.0 • tools</small>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <div className="main-section">
+      <div className="dl-main">
         {/* Header */}
-        <header className="header">
-          <input type="text" className="search-bar" placeholder="Search..." />
-          <div className="header-right">
-            <span className="status live">● Live</span>
-            <button className="create-btn">+ Create</button>
+        <header className="dl-header">
+          <input type="text" className="dl-search" placeholder="Search..." />
+          <div className="dl-header-right">
+            <span className="dl-status live">● Live</span>
+            <button className="dl-create">+ Create</button>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="main-content">
+        <main className="dl-content">
           <Outlet />
         </main>
       </div>

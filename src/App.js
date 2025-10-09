@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import DashboardLayout from './components/DashboardLayout';
 import PdfConverter from './components/PdfConverter';
+import RoomTempDashboard from "./components/RoomTempDashboard";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/pdfconverter" element={<PdfConverter />} />
           <Route path="/dashboard" element={<DashboardLayout />} />
+          <Route path="/roomtemp" element={<RoomTempDashboard />} />
           {/* Opsional: arahkan root ke login */}
           <Route path="/" element={<Login />} />
         </Routes>

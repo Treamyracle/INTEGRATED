@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import "../roomtemp-dashboard.css";
+import React, { useState, useEffect, useRef } from "react";
+import "../roomtemp-dashboard.css"; // sesuaikan path jika perlu
 
-const DEFAULT_API = "https://esp-32-room-temp.vercel.app/api/latest"; // ganti bila mau pakai URL penuh
+const DEFAULT_API = "https://esp-32-room-temp.vercel.app/api/latest";
 
-export default function RoomTempDashboard({ apiUrl = DEFAULT_API, pollInterval = 2000 }) {
+const RoomTempDashboard = ({ apiUrl = DEFAULT_API, pollInterval = 2000 }) => {
   const [temp, setTemp] = useState(null);
   const [hum, setHum] = useState(null);
   const [ts, setTs] = useState(null);
@@ -18,19 +18,22 @@ export default function RoomTempDashboard({ apiUrl = DEFAULT_API, pollInterval =
       setStatus("loading");
       try {
         const res = await fetch(apiUrl, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
         const j = await res.json();
         if (!j || !j.ok) {
           setStatus("error");
           return;
         }
-        // expect { ok:true, temp: number, hum: number, ts: string }
         setTemp(Number(j.temp));
         setHum(Number(j.hum));
         setTs(j.ts || Date.now());
         setStatus("ok");
       } catch (err) {
-        console.error("fetch error:", err);
+        /* eslint-disable no-console */
+        console.error("rt: fetch error:", err);
+        /* eslint-enable no-console */
         setStatus("error");
       }
     };
@@ -54,7 +57,7 @@ export default function RoomTempDashboard({ apiUrl = DEFAULT_API, pollInterval =
       <header className="rt-header">
         <div className="rt-title-block">
           <h1 className="rt-title">Room Temp</h1>
-          <p className="rt-subtitle">Realtime temperature & humidity</p>
+          <p className="rt-subtitle">Realtime temperature &amp; humidity</p>
         </div>
 
         <div className={`rt-status-pill rt-status-${status}`}>
@@ -72,15 +75,22 @@ export default function RoomTempDashboard({ apiUrl = DEFAULT_API, pollInterval =
         <section className="rt-main-row">
           <div className="rt-temp-col">
             <div className="rt-temp-label">Temperature</div>
-            <div className="rt-temp-value">{formattedTemp} <span className="rt-temp-unit">°C</span></div>
-            <div className="rt-meta">Updated: <span className="rt-meta-strong">{formattedTs}</span></div>
+            <div className="rt-temp-value">
+              {formattedTemp} <span className="rt-temp-unit">°C</span>
+            </div>
+            <div className="rt-meta">
+              Updated: <span className="rt-meta-strong">{formattedTs}</span>
+            </div>
           </div>
 
           <div className="rt-divider" />
 
           <div className="rt-hum-col">
             <div className="rt-hum-label">Humidity</div>
-            <div className="rt-hum-value">{formattedHum} <span className="rt-hum-unit">%</span></div>
+            <div className="rt-hum-value">
+              {formattedHum} <span className="rt-hum-unit">%</span>
+            </div>
+
             <div className="rt-hum-bar-wrapper" aria-hidden="true">
               <div className="rt-hum-bar">
                 <div
@@ -100,9 +110,14 @@ export default function RoomTempDashboard({ apiUrl = DEFAULT_API, pollInterval =
         )}
 
         <footer className="rt-footer">
-          <small>Data diambil tiap {pollInterval / 1000}s — API: <span className="rt-footer-api">{apiUrl}</span></small>
+          <small>
+            Data diambil tiap {pollInterval / 1000}s — API:{" "}
+            <span className="rt-footer-api">{apiUrl}</span>
+          </small>
         </footer>
       </main>
     </div>
   );
-}
+};
+
+export default RoomTempDashboard;
