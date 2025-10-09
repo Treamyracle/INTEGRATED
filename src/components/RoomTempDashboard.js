@@ -3,7 +3,7 @@ import "../roomtemp-dashboard.css"; // sesuaikan path jika perlu
 
 const DEFAULT_API = "https://esp-32-room-temp.vercel.app/api/latest";
 
-const RoomTempDashboard = ({ apiUrl = DEFAULT_API, pollInterval = 2000 }) => {
+const RoomTempDashboard = ({ apiUrl = DEFAULT_API, pollInterval = 10000 }) => {
   const [temp, setTemp] = useState(null);
   const [hum, setHum] = useState(null);
   const [ts, setTs] = useState(null);
