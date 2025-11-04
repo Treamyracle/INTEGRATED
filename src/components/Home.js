@@ -74,7 +74,7 @@ const Home = () => {
             quis libero viverra facilisis sit amet elit. Nunc egestas nisi eget
             enim gravida facilisis...
           </p>
-          <a href="#" className="read-more-link">
+          <a href="https://huggingface.co/treamyracle" className="read-more-link">
             READ MORE
           </a>
         </div>
