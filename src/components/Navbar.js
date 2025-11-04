@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="main-navbar">
       <div className="nav-logo">
-        <Link to="/">TG</Link> {/* Ganti "TG" dengan inisial Anda */}
+        <Link to="/">AAH</Link> {/* Ganti "TG" dengan inisial Anda */}
       </div>
       <ul className="nav-links">
         {/* Link yang sudah ada */}

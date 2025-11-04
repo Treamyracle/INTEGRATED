@@ -80,7 +80,7 @@ const Home = () => {
         </div>
         <div className="showcase-logo">
           {/* Logo placeholder dari gambar */}
-          <span className="logo-it">IT</span>
+          <span className="logo-it">tream</span>
         </div>
       </section>
     </div>
