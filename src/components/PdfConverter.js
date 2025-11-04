@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../PdfConverter.css"; // Sesuaikan jika path berbeda
+import "../css/PdfConverter.css"; // Sesuaikan jika path berbeda
 
 // BARU: Cara impor yang lebih baik dan stabil, tidak lagi menggunakan CDN
 import { GlobalWorkerOptions, getDocument } from "pdfjs-dist/build/pdf";

@@ -1,27 +1,31 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
+
+// Import komponen yang sudah ada
 import DashboardLayout from './components/DashboardLayout';
 import PdfConverter from './components/PdfConverter';
 import RoomTempDashboard from "./components/RoomTempDashboard";
 
+// --- IMPORT KOMPONEN BARU ---
+import Home from './components/Home';             // Halaman portfolio utama
+import AboutMe from './components/AboutMe';       // Halaman About Me
+import CV from './components/CV';               // Halaman CV
+import DashboardHome from './components/DashboardHome'; // Halaman default dashboard
+
+// Salin ErrorBoundary Anda ke sini
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
   }
-
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
-
   componentDidCatch(error, errorInfo) {
     console.error('Error caught by boundary:', error);
     console.error('Error info:', errorInfo);
   }
-
   render() {
     if (this.state.hasError) {
       return (
@@ -35,6 +39,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+
 function App() {
   console.log('App rendering...'); // Debug log
   
@@ -42,13 +47,28 @@ function App() {
     <ErrorBoundary>
       <Router>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/pdfconverter" element={<PdfConverter />} />
-          <Route path="/dashboard" element={<DashboardLayout />} />
-          <Route path="/roomtemp" element={<RoomTempDashboard />} />
-          {/* Opsional: arahkan root ke login */}
-          <Route path="/" element={<Login />} />
+          {/* --- RUTE HALAMAN UTAMA --- */}
+          <Route path="/" element={<Home />} />
+          <Route path="/aboutme" element={<AboutMe />} />
+          <Route path="/cv" element={<CV />} />
+          
+          {/* --- RUTE DASHBOARD (NESTED) --- */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            
+            {/* Rute index: apa yang tampil di /dashboard */}
+            <Route index element={<DashboardHome />} /> 
+            
+            {/* Rute anak: /dashboard/pdfconverter */}
+            <Route path="pdfconverter" element={<PdfConverter />} /> 
+
+            {/* Rute anak: /dashboard/roomtemp */}
+            <Route path="roomtemp" element={<RoomTempDashboard />} />
+
+          </Route>
+          
+          {/* Anda bisa tambahkan rute "Not Found" jika perlu */}
+          {/* <Route path="*" element={<div>Halaman Tidak Ditemukan</div>} /> */}
+
         </Routes>
       </Router>
     </ErrorBoundary>

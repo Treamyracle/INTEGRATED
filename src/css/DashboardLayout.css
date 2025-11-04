@@ -132,6 +132,17 @@
 }
 .dl-create:hover{ background:var(--dl-primary-dark); }
 
+.dl-back-home {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #888;
+  font-size: 14px;
+}
+.dl-back-home:hover {
+  color: #fff;
+}
+
 /* Content */
 .dl-content{
   padding:1.25rem;
@@ -148,3 +159,5 @@
   .dl-nav ul { flex-direction:row; gap:0.5rem; }
   .dl-header { padding:0.6rem; }
 }
+
+

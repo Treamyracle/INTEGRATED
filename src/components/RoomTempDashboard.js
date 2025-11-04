@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../roomtemp-dashboard.css"; // sesuaikan path jika perlu
+import "../css/roomtemp-dashboard.css"; // sesuaikan path jika perlu
 
 const DEFAULT_API = "https://esp-32-room-temp.vercel.app/api/latest";
 

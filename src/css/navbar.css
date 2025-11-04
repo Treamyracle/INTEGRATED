@@ -1,0 +1,33 @@
+/* src/components/Navbar.css */
+
+.portfolio-navbar {
+  position: fixed; /* Tetap di layar saat scroll */
+  top: 0;
+  right: 0;
+  padding: 20px 30px;
+  background-color: white;
+  border-bottom-left-radius: 10px;
+  box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000; /* Memastikan navbar di atas konten lain */
+}
+
+.portfolio-navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 25px; /* Jarak antar item */
+}
+
+.portfolio-navbar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+/* Gunakan warna merah dari login.css Anda untuk hover */
+.portfolio-navbar a:hover {
+  color: #A31D1D; 
+}
