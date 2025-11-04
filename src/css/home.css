@@ -1,0 +1,176 @@
+/* src/components/Home.css */
+
+/* Kontainer utama halaman */
+.home-page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #F1F1F1;
+    /* Warna latar abu-abu muda */
+    font-family: 'Arial', sans-serif;
+    /* Ganti dengan font pilihan Anda */
+}
+
+/* Kontainer Hero (Split-screen) */
+.home-hero {
+    display: flex;
+    flex: 1;
+    /* Membuat section ini mengisi sisa ruang */
+    width: 100%;
+}
+
+/* Bagian Kiri Hero */
+.hero-left {
+    flex-basis: 50%;
+    background-color: #F1F1F1;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.hero-text p {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: #444;
+}
+
+.hero-text h1 {
+    font-size: 72px;
+    font-weight: bold;
+    color: #111;
+    margin: 10px 0;
+    line-height: 1.1;
+}
+
+.hero-text h2 {
+    font-size: 20px;
+    font-weight: 400;
+    color: #555;
+    margin: 0;
+}
+
+/* Ikon Sosial Media */
+.social-links {
+    margin-top: 40px;
+    display: flex;
+    /* Tambahkan flex untuk mengatur jarak */
+    gap: 15px;
+    /* Jarak antar kotak ikon */
+}
+
+.social-links a {
+    font-size: 28px;
+    /* Perbesar sedikit ikonnya */
+    color: #111;
+    /* Ubah warna ikon menjadi hitam */
+    margin-right: 0;
+    /* Hapus margin lama, kita pakai 'gap' */
+    text-decoration: none;
+
+    /* --- Ini adalah style baru untuk kotak --- */
+    background-color: #E0E0E0;
+    /* Warna abu-abu muda */
+    padding: 12px;
+    /* Ruang di dalam kotak */
+    border-radius: 8px;
+    /* Sudut sedikit melengkung */
+    display: inline-flex;
+    /* Agar padding dan alignment bekerja */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
+    /* Shadow seperti di gambar */
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #000;
+    background-color: #d0d0d0;
+    /* Sedikit lebih gelap saat di-hover */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    /* Shadow lebih kuat */
+    transform: translateY(-2px);
+    /* Efek sedikit terangkat */
+}
+
+/* Bagian Kanan Hero (Placeholder Gambar) */
+.hero-right {
+  flex-basis: 50%;
+  background-color: #111; /* Warna hitam */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* Penting untuk caption */
+}
+
+.hero-image {
+  width: 80%; /* Sesuaikan ukurannya agar mirip placeholder */
+  /* height: 80%; */ /* Sebaiknya biarkan height auto agar rasio pas */
+  max-width: 450px; /* Batas opsional agar tidak terlalu besar */
+  border-radius: 10px; /* Samakan dengan placeholder */
+  object-fit: cover; /* Penting agar gambar tidak gepeng/distorsi */
+}
+
+/* Bagian Bawah ("IT BERRIES") */
+.home-showcase {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    /* Latar abu-abu gelap */
+    color: #ccc;
+    padding: 40px 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.showcase-content {
+    flex-basis: 70%;
+}
+
+.showcase-content h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 10px 0;
+}
+
+.showcase-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    max-width: 600px;
+}
+
+.read-more-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 3px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.read-more-link:hover {
+    color: #F1F1F1;
+    border-color: #F1F1F1;
+}
+
+/* Logo "IT" di kanan bawah */
+.showcase-logo {
+    flex-basis: 30%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logo-it {
+    font-size: 100px;
+    font-weight: bold;
+    color: #444;
+    line-height: 1;
+}

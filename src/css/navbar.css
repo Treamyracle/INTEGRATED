@@ -1,33 +1,64 @@
 /* src/components/Navbar.css */
 
-.portfolio-navbar {
-  position: fixed; /* Tetap di layar saat scroll */
-  top: 0;
-  right: 0;
-  padding: 20px 30px;
-  background-color: white;
-  border-bottom-left-radius: 10px;
-  box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
-  z-index: 1000; /* Memastikan navbar di atas konten lain */
+/* Mengatur container navbar */
+.main-navbar {
+  display: flex;
+  justify-content: space-between; /* Logo kiri, links kanan */
+  align-items: center;
+  padding: 25px 40px; /* Padding atas/bawah 25px, kiri/kanan 40px */
+  background-color: #F1F1F1; /* Warna abu-abu muda dari gambar */
+  width: 100%;
+  box-sizing: border-box; /* Agar padding tidak menambah lebar */
 }
 
-.portfolio-navbar ul {
+/* Styling Logo "TG" */
+.nav-logo a {
+  font-size: 24px;
+  font-weight: bold;
+  color: #111;
+  text-decoration: none;
+  border: 2px solid #111;
+  padding: 8px 10px;
+  line-height: 1;
+}
+
+/* Styling container link di kanan */
+.nav-links {
+  display: flex;
+  align-items: center;
   list-style-type: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  gap: 25px; /* Jarak antar item */
+  gap: 30px; /* Jarak antar link */
 }
 
-.portfolio-navbar a {
+/* Styling link standar */
+.nav-links a {
   text-decoration: none;
   color: #333;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 14px;
   transition: color 0.3s;
 }
 
-/* Gunakan warna merah dari login.css Anda untuk hover */
-.portfolio-navbar a:hover {
-  color: #A31D1D; 
+.nav-links a:hover {
+  color: #000;
+}
+
+/* Styling Tombol "CONTACT ME" */
+.nav-contact-btn {
+  background-color: #fff;
+  color: #111;
+  padding: 12px 20px;
+  border-radius: 30px; /* Membuatnya bulat */
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  border: 1px solid #ddd;
+}
+
+.nav-contact-btn:hover {
+  background-color: #111;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
