@@ -1,4 +1,3 @@
-// src/components/DashboardLayout.js
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import "../css/DashboardLayout.css"; // sesuaikan path jika diperlukan
@@ -12,12 +11,7 @@ const DashboardLayout = () => {
 
         <nav className="dl-nav">
           <ul>
-            <li>
-              <span>📊 Overview</span>
-              <Link to=".">
-                <button className="dl-go-btn">Go</button>
-              </Link>
-            </li>
+            {/* Item "Overview" sudah dihapus */}
 
             <li>
               <span>🌡 Room Temp</span>
@@ -33,12 +27,43 @@ const DashboardLayout = () => {
               </Link>
             </li>
 
+            {/* === LINK BARU (EXTERNAL) === */}
             <li>
-              <span>⚙️ Settings</span>
-              <Link to="settings">
+              <span>🗓️ FilkomReserV</span>
+              {/* Gunakan tag <a> untuk link eksternal */}
+              <a
+                href="https://feaps.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <button className="dl-go-btn">Go</button>
-              </Link>
+              </a>
             </li>
+
+            <li>
+              <span>🔗 Potongin</span>
+              <a
+                href="https://app.potong.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="dl-go-btn">Go</button>
+              </a>
+            </li>
+
+            <li>
+              <span>💡 Filoti</span>
+              <a
+                href="https://filoti-frontend.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button className="dl-go-btn">Go</button>
+              </a>
+            </li>
+            {/* === AKHIR LINK BARU === */}
+
+            {/* Item "Settings" sudah dihapus */}
           </ul>
         </nav>
 
@@ -53,14 +78,6 @@ const DashboardLayout = () => {
       {/* Main Content */}
       <div className="dl-main">
         {/* === BAGIAN HEADER SUDAH DIHAPUS === */}
-        {/*             <header className="dl-header">
-               <input type="text" className="dl-search" placeholder="Search..." />
-               <div className="dl-header-right">
-                  <span className="dl-status live">● Live</span>
-      t          <button className="dl-create">+ Create</button>
-               </div>
-            </header> 
-            */}
 
         {/* Page Content */}
         <main className="dl-content">
