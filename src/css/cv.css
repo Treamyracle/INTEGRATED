@@ -1,0 +1,33 @@
+/* src/css/CV.css */
+
+.cv-container {
+  /* Beri padding atas untuk Navbar */
+  padding-top: 100px; 
+  text-align: center;
+  /* Atur lebar maksimum agar tidak terlalu lebar di layar besar */
+  max-width: 900px; 
+  width: 90%;
+  margin: 0 auto; /* Tengah secara horizontal */
+}
+
+.cv-container p {
+  margin-bottom: 25px;
+  font-size: 16px;
+  color: #555;
+}
+
+.pdf-viewer-wrapper {
+  /* Tentukan tinggi dari viewer */
+  height: 800px; 
+  width: 100%;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden; /* Untuk merapikan border-radius */
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none; /* Hapus border default iframe */
+}
