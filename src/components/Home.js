@@ -50,31 +50,32 @@ const Home = () => {
         </div>
 
         {/* Bagian Kanan (Gambar) */}
-<div className="hero-right">
+        <div className="hero-right">
           {/* HAPUS <div className="hero-placeholder"> ... </div> */}
-          
+
           {/* GANTI DENGAN INI: */}
-          <img 
-            src={fotoProfil} 
-            alt="Potret Arif Athaya Harahap" 
-            className="hero-image" 
+          <img
+            src={fotoProfil}
+            alt="Potret Arif Athaya Harahap"
+            className="hero-image"
           />
 
-          
-        </div>
+
+        </div>
       </main>
 
       {/* 3. Bottom Showcase Section ("IT BERRIES") */}
       <section className="home-showcase">
         <div className="showcase-content">
-          <h3>IT BERRIES</h3>
+          <h3>About Me</h3>
           <p>
-            Hello in velt a metus rhoncus tempus. Nulla congue nulla vel sem
-            varius finibus. Sed ornare sit amet lorem sed viverra. In vel urna
-            quis libero viverra facilisis sit amet elit. Nunc egestas nisi eget
-            enim gravida facilisis...
+            Informatics Engineering undergraduate with a strong foundation in Machine Learning, Deep Learning, AI,
+            Blockchain, and Backend/Frontend development. Skilled in collaborating within teams to take projects
+            from concept to deployment, with live applications on Google Cloud Run (AI Itinerary Agent) and Vercel
+            (Room Booking and Lost and Found System, Link Shortener). Fueled by a deep passion for all aspects of
+            technology, I am committed to continuous growth and developing into a leading expert in the field.
           </p>
-          <a href="https://huggingface.co/treamyracle" className="read-more-link">
+          <a href="https://www.tream.icu/" className="read-more-link">
             READ MORE
           </a>
         </div>
