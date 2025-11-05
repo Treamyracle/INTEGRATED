@@ -16,7 +16,7 @@ const Navbar = () => {
         <li><Link to="/cv">CV</Link></li>
         
         {/* Link baru yang Anda minta */}
-        <li><Link to="/portfolio">Portfolio</Link></li> 
+        <li><Link to="/portofolio">Portfolio</Link></li> 
         
         {/* Tombol Contact Me */}
         <li>

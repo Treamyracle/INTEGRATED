@@ -12,7 +12,7 @@ import Home from './components/Home';             // Halaman portfolio utama
 import AboutMe from './components/AboutMe';       // Halaman About Me
 import CV from './components/CV';               // Halaman CV
 import DashboardHome from './components/DashboardHome'; // Halaman default dashboard
-
+import Portofolio from './components/Portofolio'; // Halaman Portofolio
 // Salin ErrorBoundary Anda ke sini
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -51,6 +51,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/aboutme" element={<AboutMe />} />
           <Route path="/cv" element={<CV />} />
+          <Route path="/portofolio" element={<Portofolio />} />
           
           {/* --- RUTE DASHBOARD (NESTED) --- */}
           <Route path="/dashboard" element={<DashboardLayout />}>
