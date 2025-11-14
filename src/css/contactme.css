@@ -42,12 +42,14 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Ganti .contact-icon-img menjadi .contact-icon */
+/* --- PERUBAHAN UTAMA ADA DI SINI --- */
 .contact-icon {
   font-size: 45px; /* Kontrol ukuran ikon dengan font-size */
   margin-bottom: 1.25rem;
   transition: transform 0.3s ease; /* Transisi halus untuk hover */
 }
+/* ------------------------------------- */
+
 
 /* (Opsional) Tambahkan efek hover agar ikon sedikit membesar */
 .contact-card:hover .contact-icon {
