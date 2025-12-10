@@ -1,22 +1,30 @@
-// src/components/Portfolio.js
+// src/components/Portofolio.jsx
 import React from 'react';
 import Navbar from './Navbar';
+import '../css/portofolio.css'; 
 
 import pdfFile from "../assets/images/PORTOFOLIO.pdf";
-
-import '../css/portofolio.css'; 
 
 const Portfolio = () => {
   return (
     <div>
       <Navbar />
-      
-      {/* 2. Kita gunakan class CSS yang sama persis dengan CV.js agar stylenya konsisten */}
       <div className="cv-container">
         <h1>Portofolio Saya</h1>
-        <p>Berikut adalah rincian portofolio dan project yang pernah saya kerjakan.</p>
+        <p>Berikut adalah portofolio saya.</p>
         
-        {/* 3. Wrapper dan iframe untuk menampilkan PDF */}
+        {/* --- TAMBAHAN: Tombol untuk Mobile --- */}
+        <div style={{ marginBottom: '20px' }}>
+            <a 
+              href={pdfFile} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="pdf-download-btn"
+            >
+              Buka / Download Portofolio (PDF)
+            </a>
+        </div>
+        
         <div className="pdf-viewer-wrapper">
           <iframe 
             src={pdfFile}

@@ -30,3 +30,28 @@
   height: 100%;
   border: none; /* Hapus border default iframe */
 }
+
+/* Styling Tombol Download PDF */
+.pdf-download-btn {
+  display: inline-block;
+  background-color: #333; /* Warna tombol */
+  color: #fff;
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background 0.3s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.pdf-download-btn:hover {
+  background-color: #000;
+  transform: translateY(-2px);
+}
+
+/* Opsional: Sembunyikan iframe di HP jika benar-benar mengganggu/jelek */
+@media screen and (max-width: 768px) {
+  .pdf-viewer-wrapper {
+    display: none; /* Hilangkan kotak abu-abu error di HP */
+  }
+}
