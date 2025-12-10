@@ -1,201 +1,90 @@
-/* DashboardLayout.css (Diperbarui dengan Gaya Home.css) */
+/* src/css/DashboardLayout.css */
 
-/* --- PERUBAHAN --- */
-/* Font 'Poppins' dihapus, akan menggunakan 'Arial' dari reset */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap'); */
-
-:root {
-  /* --- PERUBAHAN: Warna disesuaikan dengan Home.css --- */
-  --dl-primary-light: #222; /* Warna gelap dari .home-showcase */
-  --dl-primary-dark: #111; /* Warna paling gelap dari .hero-right */
-  --dl-bg: #F1F1F1; /* Warna latar utama dari .home-page-container */
-  --dl-surface: #FFFFFF; /* Tetap putih untuk area konten yang bersih */
-  --dl-text: #222222; /* Teks gelap standar */
-  --dl-border: #E0E0E0; /* Border/aksen dari .social-links */
-  --dl-success: #66BB6A; /* Ini akan di-override di bawah */
+/* Reset Layout: Pastikan vertikal (atas ke bawah) */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Warna latar abu-abu muda */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Reset */
-* {
+/* Area Konten */
+.dashboard-content {
+  flex: 1; /* Mengisi sisa ruang di bawah Navbar */
+  padding: 40px 20px; /* Jarak ke dalam */
+  max-width: 1200px; /* Batas lebar konten agar rapi di layar besar */
+  margin: 0 auto; /* Tengah-tengah */
+  width: 100%;
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  /* --- PERUBAHAN --- */
-  font-family: 'Arial', sans-serif; /* Font disamakan dengan Home.css */
 }
 
-/* Layout */
-.dl-layout {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  background: var(--dl-bg);
-}
+/* --- Styling Tambahan untuk Menu Grid (DashboardHome) --- */
+/* (Tetap dipertahankan agar kotak-kotak menu tetap rapi) */
 
-/* Sidebar */
-.dl-sidebar {
-  width: 16rem;
-  /* --- PERUBAHAN --- */
-  /* Gradient sekarang menggunakan warna gelap dari Home.css */
-  background: linear-gradient(to bottom, var(--dl-primary-light), var(--dl-primary-dark));
-  color: #fff;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.08);
-}
-
-.dl-logo {
-  font-size: 1.25rem;
-  font-weight: 700;
+.dashboard-home-container {
   text-align: center;
-  margin-bottom: 1rem;
+  padding: 10px 0;
 }
 
-/* Navigation */
-.dl-nav ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.dl-nav li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem;
-  border-radius: 0.6rem;
-  background: rgba(255, 255, 255, 0.06);
-  transition: background 0.18s ease;
-}
-.dl-nav li:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-.dl-nav li span {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-weight: 600;
+.dashboard-home-container h1 {
+  margin-bottom: 10px;
+  color: #333;
 }
 
-/* --- PERUBAHAN BESAR: Tombol "Go" disamakan dengan .social-links --- */
-.dl-go-btn {
-  background: #E0E0E0; /* Warna abu-abu dari .social-links */
-  border: none;
-  color: #111; /* Teks hitam */
-  padding: 0.4rem 0.7rem;
-  border-radius: 8px; /* Radius dari .social-links */
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15); /* Shadow dari .social-links */
-  transition: all 0.3s ease;
-}
-.dl-go-btn:hover {
-  background-color: #d0d0d0; /* Hover dari .social-links */
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* Hover dari .social-links */
-  transform: translateY(-2px); /* Hover dari .social-links */
+.dashboard-home-container p {
+  margin-bottom: 40px;
+  color: #666;
 }
 
-/* Sidebar footer */
-.dl-sidebar-footer {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.85rem;
-  text-align: center;
-  margin-top: 1rem;
+.dashboard-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  justify-content: center;
 }
 
-/* Main */
-.dl-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header */
-.dl-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 1.25rem;
-  background: var(--dl-surface); /* Tetap putih */
-  border-bottom: 1px solid var(--dl-border); /* Border abu-abu */
-}
-.dl-search {
-  flex: 1;
-  max-width: 32rem;
-  padding: 0.6rem 1rem;
-  border-radius: 0.6rem;
-  border: 1px solid var(--dl-border);
-}
-.dl-search:focus {
-  outline: none;
-  /* --- PERUBAHAN: Warna focus dinetralkan --- */
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
-  border-color: #AAAAAA;
-}
-.dl-header-right {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-}
-/* --- PERUBAHAN: Warna "Live" dinetralkan --- */
-.dl-status.live {
-  color: var(--dl-text);
-  font-weight: 700;
-}
-.dl-create {
-  /* Tombol ini sekarang akan menggunakan warna --dl-primary (abu gelap) */
-  background: var(--dl-primary-light);
-  border: none;
-  color: #fff;
-  padding: 0.5rem 0.8rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-}
-.dl-create:hover {
-  background: var(--dl-primary-dark);
-}
-
-.dl-back-home {
-  display: block;
-  padding: 10px;
+/* Styling Kartu Menu */
+.menu-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
   text-decoration: none;
-  color: #AAAAAA; /* Warna dibuat lebih terang sedikit */
+  color: inherit;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  border-color: #ddd;
+}
+
+.card-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.menu-card h3 {
+  margin: 10px 0;
+  color: #222;
+}
+
+.menu-card p {
   font-size: 14px;
-}
-.dl-back-home:hover {
-  color: #fff;
-}
-
-/* Content */
-.dl-content {
-  padding: 1.25rem;
-  background: var(--dl-surface); /* Konten tetap putih */
-  flex: 1;
-  overflow: auto;
+  color: #777;
+  margin: 0;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .dl-layout {
-    flex-direction: column;
-  }
-  .dl-sidebar {
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0.8rem;
-  }
-  .dl-nav {
-    display: flex;
-  }
-  .dl-nav ul {
-    flex-direction: row;
-    gap: 0.5rem;
-  }
-  .dl-header {
-    padding: 0.6rem;
+/* --- Responsif Mobile --- */
+@media screen and (max-width: 768px) {
+  .dashboard-content {
+    padding: 20px 15px; /* Kurangi padding di HP */
   }
 }

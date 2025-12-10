@@ -8,7 +8,7 @@ const AboutMe = () => {
       <Navbar />
       <div style={{ paddingTop: '100px', textAlign: 'center' }}>
         <h1>Tentang Saya</h1>
-        <p>Halaman ini akan berisi deskripsi tentang diri Anda.</p>
+        <p>Under Construction!</p>
       </div>
     </div>
   );
