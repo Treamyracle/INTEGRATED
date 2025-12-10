@@ -1,13 +1,13 @@
 // src/components/DashboardHome.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FaFilePdf, 
-  FaThermometerHalf, 
-  FaUserAstronaut, 
-  FaCalendarCheck, 
-  FaCut, 
-  FaLightbulb 
+import {
+  FaFilePdf,
+  FaThermometerHalf,
+  FaUserAstronaut,
+  FaCalendarCheck,
+  FaCut,
+  FaLightbulb
 } from 'react-icons/fa';
 // Pastikan CSS DashboardLayout.css sudah terimport di layout induknya
 
@@ -18,7 +18,7 @@ const DashboardHome = () => {
       <p>Silakan pilih menu aplikasi atau layanan di bawah ini:</p>
 
       <div className="dashboard-menu-grid">
-        
+
         {/* --- 1. PDF CONVERTER (Internal) --- */}
         <Link to="/dashboard/pdfconverter" className="menu-card">
           <div className="card-icon">
@@ -38,10 +38,10 @@ const DashboardHome = () => {
         </Link>
 
         {/* --- 3. FILKOM RESERV (External) --- */}
-        <a 
-          href="https://feaps.vercel.app/" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <a
+          href="https://feaps.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="menu-card"
         >
           <div className="card-icon">
@@ -52,10 +52,10 @@ const DashboardHome = () => {
         </a>
 
         {/* --- 4. POTONGIN (External) --- */}
-        <a 
-          href="https://app.potong.in/" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <a
+          href="https://app.potong.in/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="menu-card"
         >
           <div className="card-icon">
@@ -66,10 +66,10 @@ const DashboardHome = () => {
         </a>
 
         {/* --- 5. FILOTI (External) --- */}
-        <a 
-          href="https://filoti-frontend.vercel.app/" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+        <a
+          href="https://filoti-frontend.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
           className="menu-card"
         >
           <div className="card-icon">
@@ -78,16 +78,6 @@ const DashboardHome = () => {
           <h3>Filoti</h3>
           <p>Sistem Lost & Found Item</p>
         </a>
-
-        {/* --- 6. PROFILE INFO (Internal - Opsional) --- */}
-        <Link to="/aboutme" className="menu-card">
-          <div className="card-icon">
-            <FaUserAstronaut style={{ color: '#6610f2' }} />
-          </div>
-          <h3>Profile Info</h3>
-          <p>Lihat informasi detail tentang saya</p>
-        </Link>
-
       </div>
     </div>
   );
