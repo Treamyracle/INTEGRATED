@@ -205,23 +205,21 @@
 
     /* 2. Atur lebar bagian Teks (kiri) dan Gambar (kanan) jadi 100% */
     .hero-left {
-        flex-basis: auto;
         width: 100%;
         padding: 40px 20px;
-        /* Teks tetap punya jarak */
+        box-sizing: border-box;
+        /* Pastikan padding tidak menambah lebar */
     }
 
     .hero-right {
-        flex-basis: auto;
         width: 100%;
-        /* Atur padding khusus gambar: 
-           40px (atas), 20px (kanan), 0px (bawah), 20px (kiri) */
+        /* Padding: Atas 40px, Kanan 20px, Bawah 0, Kiri 20px */
         padding: 40px 20px 0px 20px;
+        box-sizing: border-box;
+        /* SANGAT PENTING */
 
-        /* Pastikan item di dalamnya menempel ke bawah */
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
+        /* Pastikan background hitamnya (jika ada) mentok */
+        margin: 0;
     }
 
     /* 3. Sesuaikan ukuran font agar tidak terlalu besar di HP */
