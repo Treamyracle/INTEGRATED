@@ -1,26 +1,47 @@
-// src/components/navbar.js
-import React from 'react';
+// src/components/Navbar.jsx
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/navbar.css'; // Pastikan nama file CSS ini sesuai
+import { FaBars, FaTimes } from 'react-icons/fa'; // Import ikon hamburger & silang
+import '../css/navbar.css';
 
 const Navbar = () => {
+  // State untuk melacak apakah menu sedang terbuka atau tertutup
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Fungsi untuk mengubah status menu
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <nav className="main-navbar">
       <div className="nav-logo">
-        <Link to="/">AAH</Link> {/* Ganti "TG" dengan inisial Anda */}
+        <Link to="/" onClick={() => setIsOpen(false)}>AAH</Link>
       </div>
-      <ul className="nav-links">
-        {/* Link yang sudah ada */}
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/aboutme">About Me</Link></li> 
-        <li><Link to="/cv">CV</Link></li>
-        
-        {/* Link baru yang Anda minta */}
-        <li><Link to="/portofolio">Portfolio</Link></li> 
-        
-        {/* Tombol Contact Me */}
+
+      {/* Ikon Hamburger (Hanya muncul di HP) */}
+      <div className="menu-icon" onClick={toggleMenu}>
+        {isOpen ? <FaTimes /> : <FaBars />}
+      </div>
+
+      {/* Daftar Link (Ditambah class 'active' jika isOpen true) */}
+      <ul className={isOpen ? "nav-links active" : "nav-links"}>
         <li>
-          <Link to="/contact" className="nav-contact-btn">
+          <Link to="/dashboard" onClick={() => setIsOpen(false)}>Dashboard</Link>
+        </li>
+        <li>
+          <Link to="/aboutme" onClick={() => setIsOpen(false)}>About Me</Link>
+        </li>
+        <li>
+          <Link to="/cv" onClick={() => setIsOpen(false)}>CV</Link>
+        </li>
+        <li>
+          <Link to="/portofolio" onClick={() => setIsOpen(false)}>Portfolio</Link>
+        </li>
+        
+        {/* Tombol Contact */}
+        <li>
+          <Link to="/contact" className="nav-contact-btn" onClick={() => setIsOpen(false)}>
             CONTACT ME
           </Link>
         </li>

@@ -1,17 +1,18 @@
 /* src/components/Navbar.css */
 
-/* Mengatur container navbar */
 .main-navbar {
   display: flex;
-  justify-content: space-between; /* Logo kiri, links kanan */
+  justify-content: space-between;
   align-items: center;
-  padding: 25px 40px; /* Padding atas/bawah 25px, kiri/kanan 40px */
-  background-color: #F1F1F1; /* Warna abu-abu muda dari gambar */
+  padding: 20px 40px; /* Sedikit diperkecil agar tidak terlalu tebal */
+  background-color: #F1F1F1;
   width: 100%;
-  box-sizing: border-box; /* Agar padding tidak menambah lebar */
+  box-sizing: border-box;
+  position: relative; /* Penting untuk posisi menu mobile */
+  z-index: 999; /* Agar navbar selalu di atas konten lain */
 }
 
-/* Styling Logo "TG" */
+/* Styling Logo */
 .nav-logo a {
   font-size: 24px;
   font-weight: bold;
@@ -22,17 +23,24 @@
   line-height: 1;
 }
 
-/* Styling container link di kanan */
+/* Ikon Menu (Default: Sembunyi di Desktop) */
+.menu-icon {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #111;
+}
+
+/* Container Link */
 .nav-links {
   display: flex;
   align-items: center;
   list-style-type: none;
   margin: 0;
   padding: 0;
-  gap: 30px; /* Jarak antar link */
+  gap: 30px;
 }
 
-/* Styling link standar */
 .nav-links a {
   text-decoration: none;
   color: #333;
@@ -45,12 +53,12 @@
   color: #000;
 }
 
-/* Styling Tombol "CONTACT ME" */
+/* Tombol Contact Me */
 .nav-contact-btn {
   background-color: #fff;
   color: #111;
   padding: 12px 20px;
-  border-radius: 30px; /* Membuatnya bulat */
+  border-radius: 30px;
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: all 0.3s;
@@ -61,4 +69,67 @@
   background-color: #111;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   RESPONSIVE MOBILE NAVBAR (Update Bagian Ini)
+   Lokasi: src/css/navbar.css (Paling Bawah)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+  .main-navbar {
+    padding: 20px 20px;
+    /* Pastikan navbar punya background agar menutupi menu saat sembunyi */
+    background-color: #F1F1F1; 
+    position: relative;
+    z-index: 1000; /* Pastikan navbar ada di lapisan paling atas */
+  }
+
+  .menu-icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  /* --- STYLE MENU BARU --- */
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: absolute; /* Melayang */
+    top: 100%; /* Menempel tepat di bawah navbar */
+    left: 0;   /* Rata kiri penuh (ubah dari -100%) */
+    
+    background-color: #F1F1F1;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+
+    /* --- LOGIKA ANIMASI (ATAS KE BAWAH) --- */
+    /* 1. Geser menu ke atas sejauh 100% tingginya (jadi sembunyi di balik navbar) */
+    transform: translateY(-100%); 
+    
+    /* 2. Set opacity 0 agar tidak terlihat bayangannya saat sembunyi */
+    opacity: 0;
+    
+    /* 3. Taruh di layer -1 agar posisinya di BELAKANG background navbar */
+    z-index: -1; 
+    
+    /* 4. Durasi animasi */
+    transition: all 0.5s ease-in-out;
+  }
+
+  /* Saat menu aktif (tombol diklik) */
+  .nav-links.active {
+    /* Turunkan kembali ke posisi normal (0) */
+    transform: translateY(0);
+    
+    /* Munculkan */
+    opacity: 1;
+  }
+
+  /* Style item list agar rapi */
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+    margin: 15px 0;
+  }
 }
