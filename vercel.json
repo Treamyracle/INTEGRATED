@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "framework": "create-react-app",
+  "framework": "vite",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "dist"
       }
     },
     {
@@ -16,27 +16,11 @@
   ],
   "routes": [
     {
-      "src": "/api",
-      "dest": "/api/main.go"
-    },
-    {
       "src": "/api/(.*)",
       "dest": "/api/main.go"
     },
     {
       "handle": "filesystem"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/logo(.*).png",
-      "dest": "/logo$1.png"
     },
     {
       "src": "/(.*)",
