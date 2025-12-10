@@ -4,12 +4,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px; /* Sedikit diperkecil agar tidak terlalu tebal */
+  padding: 20px 40px;
   background-color: #F1F1F1;
   width: 100%;
   box-sizing: border-box;
-  position: relative; /* Penting untuk posisi menu mobile */
-  z-index: 999; /* Agar navbar selalu di atas konten lain */
+  position: relative; 
+  z-index: 999; 
 }
 
 /* Styling Logo */
