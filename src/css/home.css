@@ -98,20 +98,27 @@
 
 /* Bagian Kanan Hero (Placeholder Gambar) */
 .hero-right {
-  flex-basis: 50%;
-  background-color: #111; /* Warna hitam */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative; /* Penting untuk caption */
+    flex-basis: 50%;
+    background-color: #111;
+    /* Warna hitam */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* Penting untuk caption */
 }
 
 .hero-image {
-  width: 80%; /* Sesuaikan ukurannya agar mirip placeholder */
-  /* height: 80%; */ /* Sebaiknya biarkan height auto agar rasio pas */
-  max-width: 450px; /* Batas opsional agar tidak terlalu besar */
-  border-radius: 10px; /* Samakan dengan placeholder */
-  object-fit: cover; /* Penting agar gambar tidak gepeng/distorsi */
+    width: 80%;
+    /* Sesuaikan ukurannya agar mirip placeholder */
+    /* height: 80%; */
+    /* Sebaiknya biarkan height auto agar rasio pas */
+    max-width: 450px;
+    /* Batas opsional agar tidak terlalu besar */
+    border-radius: 10px;
+    /* Samakan dengan placeholder */
+    object-fit: cover;
+    /* Penting agar gambar tidak gepeng/distorsi */
 }
 
 /* Bagian Bawah ("IT BERRIES") */
@@ -173,4 +180,108 @@
     font-weight: bold;
     color: #444;
     line-height: 1;
+}
+
+/* =========================================
+   RESPONSIVE MOBILE (Max-width: 768px)
+   Tambahkan di bagian paling bawah home.css
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* 1. Ubah layout utama menjadi kolom (atas ke bawah) */
+    .home-hero {
+        flex-direction: column;
+        height: auto;
+        /* Biarkan tinggi menyesuaikan isi */
+    }
+
+    /* 2. Atur lebar bagian Teks (kiri) dan Gambar (kanan) jadi 100% */
+    .hero-left {
+        flex-basis: auto;
+        width: 100%;
+        padding: 40px 20px;
+        /* Teks tetap punya jarak */
+    }
+
+    .hero-right {
+        flex-basis: auto;
+        width: 100%;
+        /* Atur padding khusus gambar: 
+           40px (atas), 20px (kanan), 0px (bawah), 20px (kiri) */
+        padding: 40px 20px 0px 20px;
+
+        /* Pastikan item di dalamnya menempel ke bawah */
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    /* 3. Sesuaikan ukuran font agar tidak terlalu besar di HP */
+    .hero-text h1 {
+        font-size: 36px;
+        /* Perkecil dari 72px ke 36px */
+    }
+
+    .hero-text p {
+        font-size: 18px;
+        /* Perkecil sedikit */
+    }
+
+    .hero-text h2 {
+        font-size: 16px;
+    }
+
+    /* 4. Atur posisi Gambar */
+    .hero-right {
+        /* Opsional: Jika ingin latar gambar menyatu dengan teks, ganti jadi #F1F1F1 */
+        /* background-color: #F1F1F1; */
+
+        padding-top: 0;
+        /* Kurangi jarak atas agar dekat dengan teks */
+        justify-content: center;
+        min-height: 300px;
+        /* Beri tinggi minimal untuk area gambar */
+    }
+
+    .hero-image {
+        width: 70%;
+        max-width: 300px;
+        margin-bottom: 0;
+        /* Hapus margin bawah gambar jika ada */
+        display: block;
+        /* Mencegah gap kecil di bawah gambar inline */
+    }
+
+    /* 5. Perbaiki bagian 'About Me' di bawah agar tidak berantakan */
+    .home-showcase {
+        flex-direction: column-reverse;
+        /* Menumpuk ke bawah */
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    .showcase-content,
+    .showcase-logo {
+        flex-basis: auto;
+        width: 100%;
+        text-align: center;
+        /* Rata tengah teks About Me */
+    }
+
+    .showcase-content p {
+        margin: 0 auto 20px auto;
+        /* Tengahkan paragraf */
+    }
+
+    .showcase-logo {
+        justify-content: center;
+        /* Tengahkan logo teks 'tream' */
+        margin-bottom: 20px;
+    }
+
+    .logo-it {
+        font-size: 60px;
+        /* Perkecil logo teks */
+    }
 }
