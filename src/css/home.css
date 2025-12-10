@@ -193,7 +193,14 @@
     .home-hero {
         flex-direction: column;
         height: auto;
-        /* Biarkan tinggi menyesuaikan isi */
+        width: 100%;
+        /* Wajib 100% */
+        padding: 0;
+        /* Hapus padding container utama jika ada */
+        margin: 0;
+        /* Hapus margin */
+        overflow: hidden;
+        /* Jaga-jaga */
     }
 
     /* 2. Atur lebar bagian Teks (kiri) dan Gambar (kanan) jadi 100% */
