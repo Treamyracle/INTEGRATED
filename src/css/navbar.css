@@ -62,11 +62,10 @@
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: all 0.3s;
-  border: 1px solid #ddd;
 }
 
 .nav-contact-btn:hover {
-  background-color: #111;
+  background-color: #696969;
   color: #fff;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
