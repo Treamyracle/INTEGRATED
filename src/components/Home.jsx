@@ -69,11 +69,10 @@ const Home = () => {
         <div className="showcase-content">
           <h3>About Me</h3>
           <p>
-            Informatics Engineering undergraduate with a strong foundation in Machine Learning, Deep Learning, AI,
-            Blockchain, and Backend/Frontend development. Skilled in collaborating within teams to take projects
-            from concept to deployment, with live applications on Google Cloud Run (AI Itinerary Agent) and Vercel
-            (Room Booking and Lost and Found System, Link Shortener). Fueled by a deep passion for all aspects of
-            technology, I am committed to continuous growth and developing into a leading expert in the field.
+            When I see a problem, I see a chance to create a solution. That is the root reason behind all my work.
+            I am an Informatics Engineering student bridging the gap between Advanced AI and Full Stack Development.
+            Whether creating itineraries with LLM Agents or managing facility reservations with custom web apps,
+            I take ownership of the process from concept to live deployment. I build to solve, and I aim to lead.
           </p>
           <a href="https://www.tream.icu/" className="read-more-link">
             READ MORE
