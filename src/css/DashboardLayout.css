@@ -5,7 +5,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8f9fa; /* Warna latar abu-abu muda */
+  background-color: #FAFAFA;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Area Konten */
@@ -19,7 +20,6 @@
 }
 
 /* --- Styling Tambahan untuk Menu Grid (DashboardHome) --- */
-/* (Tetap dipertahankan agar kotak-kotak menu tetap rapi) */
 
 .dashboard-home-container {
   text-align: center;
@@ -28,56 +28,60 @@
 
 .dashboard-home-container h1 {
   margin-bottom: 10px;
-  color: #333;
+  color: #111;
+  font-size: 32px;
 }
 
 .dashboard-home-container p {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   color: #666;
+  font-size: 16px;
 }
 
 .dashboard-menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  gap: 24px;
   justify-content: center;
 }
 
 /* Styling Kartu Menu */
 .menu-card {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
   text-decoration: none;
   color: inherit;
-  transition: transform 0.3s, box-shadow 0.3s;
-  border: 1px solid #eee;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid #eaeaea;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .menu-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
   border-color: #ddd;
 }
 
 .card-icon {
-  font-size: 40px;
-  margin-bottom: 15px;
-  color: #333;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #111;
 }
 
 .menu-card h3 {
   margin: 10px 0;
-  color: #222;
+  color: #111;
+  font-size: 18px;
 }
 
 .menu-card p {
   font-size: 14px;
-  color: #777;
+  color: #666;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -85,5 +89,8 @@
 @media screen and (max-width: 768px) {
   .dashboard-content {
     padding: 20px 15px; /* Kurangi padding di HP */
+  }
+  .menu-card {
+    padding: 30px 20px;
   }
 }

@@ -1,7 +1,7 @@
 /* src/css/aboutme.css */
 
 .about-page-wrapper {
-  background-color: #f8f9fa; /* Matches DashboardLayout.css background */
+  background-color: #FAFAFA;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,22 +11,24 @@
   display: flex;
   flex-direction: row;
   max-width: 1200px;
-  margin: 100px auto 40px auto; /* Margin top to account for navbar */
+  margin: 100px auto 60px auto; 
   background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-radius: 12px; /* Slightly sharper */
+  border: 1px solid #eaeaea; /* Elegant thin border */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02); /* Extremely soft shadow */
   overflow: hidden;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Left Column - Profile */
 .about-left {
   flex: 1;
-  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-  padding: 40px;
+  background: #ffffff; /* Clean white instead of gradient */
+  padding: 60px 40px; /* Increased padding */
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid #eee;
+  border-right: 1px solid #eaeaea; /* Delicate line */
   text-align: center;
 }
 
@@ -35,24 +37,27 @@
   height: 180px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center 10%; /* Keeps the face in frame for tall portraits */
-  border: 5px solid white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  object-position: center 10%;
+  border: 1px solid #eaeaea; /* Replaced thick 5px solid white */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
   background-color: #fff;
+  padding: 4px; /* Creates a clean gap effect */
 }
 
 .about-left h1 {
-  font-size: 28px;
-  color: #333;
-  margin-bottom: 5px;
+  font-size: 32px;
+  color: #111;
+  margin-bottom: 8px;
 }
 
 .about-left h3 {
-  font-size: 16px;
-  color: #777;
+  font-size: 15px;
+  color: #666;
   font-weight: 500;
-  margin-bottom: 20px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 30px;
 }
 
 .about-quick-facts {
@@ -64,48 +69,59 @@
 .about-quick-facts p {
   font-size: 15px;
   color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
 }
 
 .about-quick-facts p strong {
   width: 90px;
-  color: #333;
+  color: #222;
+  font-weight: 600;
 }
 
 .about-socials {
-  margin-top: 30px;
+  margin-top: 40px;
   display: flex;
   gap: 15px;
 }
 
 .about-socials a {
-  color: #555;
-  font-size: 24px;
-  transition: color 0.3s;
+  color: #111;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eaeaea;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .about-socials a:hover {
-  color: #000;
+  color: #fff;
+  background-color: #111;
+  border-color: #111;
+  transform: translateY(-2px);
 }
 
 /* Right Column - Details */
 .about-right {
   flex: 2;
-  padding: 40px;
+  padding: 60px; /* Increased padding */
 }
 
 .about-section {
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 }
 
 .about-section h2 {
-  font-size: 22px;
-  color: #222;
-  margin-bottom: 15px;
+  font-size: 24px;
+  color: #111;
+  margin-bottom: 20px;
   position: relative;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
 }
 
 .about-section h2::after {
@@ -113,37 +129,40 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 3px;
-  width: 50px;
-  background-color: #000000; /* Accent color */
-  border-radius: 2px;
+  height: 1px; /* Thinner, more elegant */
+  width: 40px;
+  background-color: #111; 
 }
 
 .about-section p {
-  font-size: 15px;
-  color: #555;
-  line-height: 1.6;
+  font-size: 16px;
+  color: #444;
+  line-height: 1.8; /* Better readability */
 }
 
 .skills-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .skill-tag {
-  background: #f1f3f5;
-  color: #333;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 14px;
+  background: transparent;
+  color: #111;
+  padding: 8px 16px;
+  border: 1px solid #ccc; /* Distinctive outline style */
+  border-radius: 50px;
+  font-size: 13px;
   font-weight: 500;
-  transition: background 0.3s, color 0.3s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.02em;
 }
 
 .skill-tag:hover {
-  background: #D84040;
-  color: white;
+  background: #111;
+  color: #fff;
+  border-color: #111;
+  transform: translateY(-1px);
 }
 
 .experience-list {
@@ -152,43 +171,45 @@
 }
 
 .experience-item {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .experience-item h4 {
   font-size: 18px;
-  color: #333;
-  margin-bottom: 5px;
+  color: #111;
+  margin-bottom: 6px;
 }
 
 .experience-item span {
   font-size: 13px;
-  color: #999;
+  color: #777;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 .experience-item p {
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
   .about-container {
     flex-direction: column;
-    margin: 80px 20px 20px 20px;
+    margin: 80px 20px 40px 20px;
   }
   
   .about-left {
     border-right: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eaeaea;
+    padding: 40px 20px;
   }
-}
- solid #eee;
-  }
-}
-ft {
-    border-right: none;
-    border-bottom: 1px solid #eee;
+  
+  .about-right {
+    padding: 40px 20px;
   }
 }

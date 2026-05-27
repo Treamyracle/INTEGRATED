@@ -15,18 +15,19 @@
   text-align: center;
   /* Mencegah konten keluar container di layar kecil */
   width: 100%; 
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .contact-container h1 {
-  font-size: 2.8rem;
+  font-size: 32px;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #333;
+  color: #111;
 }
 
 .contact-subtitle {
   font-size: 1.15rem;
-  color: #555;
+  color: #666;
   margin-bottom: 3rem;
   line-height: 1.6;
 }
@@ -35,31 +36,32 @@
 .contact-methods {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 24px;
   flex-wrap: wrap; /* Agar turun ke bawah jika layar sempit */
 }
 
 /* --- CARD STYLING --- */
 .contact-card {
   background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 2.5rem;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  padding: 3rem 2.5rem;
   
   /* Flex settings */
   flex: 1; 
   min-width: 280px; /* Batas minimal sebelum turun baris */
   
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .contact-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+  border-color: #ddd;
 }
 
 /* --- ICONS --- */

@@ -4,8 +4,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  background-color: #F1F1F1;
+  padding: 20px 60px; /* Lebar padding ditambah untuk kesan luas */
+  background-color: #FAFAFA;
   width: 100%;
   box-sizing: border-box;
   position: relative; 
@@ -14,19 +14,18 @@
 
 /* Styling Logo */
 .nav-logo a {
+  font-family: 'Syne', sans-serif;
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 800;
   color: #111;
   text-decoration: none;
-  border: 2px solid #111;
-  padding: 8px 10px;
-  line-height: 1;
+  letter-spacing: -0.05em; /* Rapat dan modern */
 }
 
 /* Ikon Menu (Default: Sembunyi di Desktop) */
 .menu-icon {
   display: none;
-  font-size: 28px;
+  font-size: 24px;
   cursor: pointer;
   color: #111;
 }
@@ -38,15 +37,17 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
-  gap: 30px;
+  gap: 40px; /* Jarak diperlebar */
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #333;
-  font-weight: 600;
+  color: #555; /* Abu-abu lebih lembut */
+  font-weight: 500;
   font-size: 14px;
-  transition: color 0.3s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
@@ -55,33 +56,32 @@
 
 /* Tombol Contact Me */
 .nav-contact-btn {
-  background-color: #fff;
-  color: #111;
-  padding: 12px 20px;
-  border-radius: 30px;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: all 0.3s;
+  background-color: transparent !important;
+  color: #111 !important;
+  padding: 10px 24px !important;
+  border-radius: 50px !important; /* Bentuk pill */
+  border: 1px solid #111 !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .nav-contact-btn:hover {
-  background-color: #696969;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  background-color: #111 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
 }
 
 /* =========================================
-   RESPONSIVE MOBILE NAVBAR (Update Bagian Ini)
-   Lokasi: src/css/navbar.css (Paling Bawah)
+   RESPONSIVE MOBILE NAVBAR
    ========================================= */
 
 @media screen and (max-width: 768px) {
   .main-navbar {
-    padding: 20px 20px;
-    /* Pastikan navbar punya background agar menutupi menu saat sembunyi */
-    background-color: #F1F1F1; 
+    padding: 20px 30px;
+    background-color: #FAFAFA; 
     position: relative;
-    z-index: 1000; /* Pastikan navbar ada di lapisan paling atas */
+    z-index: 1000;
   }
 
   .menu-icon {
@@ -89,46 +89,34 @@
     cursor: pointer;
   }
 
-  /* --- STYLE MENU BARU --- */
   .nav-links {
     display: flex;
     flex-direction: column;
     width: 100%;
-    position: absolute; /* Melayang */
-    top: 100%; /* Menempel tepat di bawah navbar */
-    left: 0;   /* Rata kiri penuh (ubah dari -100%) */
+    position: absolute;
+    top: 100%;
+    left: 0;
     
-    background-color: #F1F1F1;
-    border-bottom: 2px solid #ddd;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    background-color: #FAFAFA;
+    border-bottom: 1px solid #eaeaea; /* Border lebih tipis */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Shadow super halus */
 
-    /* --- LOGIKA ANIMASI (ATAS KE BAWAH) --- */
-    /* 1. Geser menu ke atas sejauh 100% tingginya (jadi sembunyi di balik navbar) */
-    transform: translateY(-100%); 
-    
-    /* 2. Set opacity 0 agar tidak terlihat bayangannya saat sembunyi */
+    transform: translateY(-10px); 
     opacity: 0;
-    
-    /* 3. Taruh di layer -1 agar posisinya di BELAKANG background navbar */
     z-index: -1; 
-    
-    /* 4. Durasi animasi */
-    transition: all 0.5s ease-in-out;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Saat menu aktif (tombol diklik) */
   .nav-links.active {
-    /* Turunkan kembali ke posisi normal (0) */
     transform: translateY(0);
-    
-    /* Munculkan */
     opacity: 1;
+    pointer-events: auto;
   }
 
-  /* Style item list agar rapi */
   .nav-links li {
     width: 100%;
     text-align: center;
-    margin: 15px 0;
+    margin: 20px 0;
   }
 }

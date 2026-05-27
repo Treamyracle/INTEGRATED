@@ -5,24 +5,22 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #F1F1F1;
-    /* Warna latar abu-abu muda */
-    /* Ganti dengan font pilihan Anda */
+    background-color: #FAFAFA;
+    animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Kontainer Hero (Split-screen) */
 .home-hero {
     display: flex;
     flex: 1;
-    /* Membuat section ini mengisi sisa ruang */
     width: 100%;
 }
 
 /* Bagian Kiri Hero */
 .hero-left {
     flex-basis: 50%;
-    background-color: #F1F1F1;
-    padding: 60px 40px;
+    background-color: #FAFAFA;
+    padding: 80px 60px; /* Increased padding */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -55,44 +53,30 @@
 .social-links {
     margin-top: 40px;
     display: flex;
-    /* Tambahkan flex untuk mengatur jarak */
-    gap: 15px;
-    /* Jarak antar kotak ikon */
+    gap: 20px;
 }
 
 .social-links a {
-    font-size: 28px;
-    /* Perbesar sedikit ikonnya */
+    font-size: 24px;
     color: #111;
-    /* Ubah warna ikon menjadi hitam */
-    margin-right: 0;
-    /* Hapus margin lama, kita pakai 'gap' */
     text-decoration: none;
 
-    /* --- Ini adalah style baru untuk kotak --- */
-    background-color: #E0E0E0;
-    /* Warna abu-abu muda */
+    background-color: transparent;
     padding: 12px;
-    /* Ruang di dalam kotak */
-    border-radius: 8px;
-    /* Sudut sedikit melengkung */
+    border-radius: 50%; /* Circular */
+    border: 1px solid #ddd;
     display: inline-flex;
-    /* Agar padding dan alignment bekerja */
     align-items: center;
     justify-content: center;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.15);
-    /* Shadow seperti di gambar */
-    transition: all 0.3s ease;
+    box-shadow: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .social-links a:hover {
-    color: #000;
-    background-color: #d0d0d0;
-    /* Sedikit lebih gelap saat di-hover */
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-    /* Shadow lebih kuat */
-    transform: translateY(-2px);
-    /* Efek sedikit terangkat */
+    color: #fff;
+    background-color: #111;
+    border-color: #111;
+    transform: translateY(-3px);
 }
 
 /* Bagian Kanan Hero (Placeholder Gambar) */
@@ -119,10 +103,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #222;
-    /* Latar abu-abu gelap */
-    color: #ccc;
-    padding: 40px 40px;
+    background-color: #0a0a0a; /* Almost black but softer */
+    color: #eaeaea;
+    padding: 60px 80px; /* Increased padding for luxury feel */
     width: 100%;
     box-sizing: border-box;
 }
