@@ -109,15 +109,9 @@
 
 .hero-image {
     width: 80%;
-    /* Sesuaikan ukurannya agar mirip placeholder */
-    /* height: 80%; */
-    /* Sebaiknya biarkan height auto agar rasio pas */
     max-width: 450px;
-    /* Batas opsional agar tidak terlalu besar */
     border-radius: 10px;
-    /* Samakan dengan placeholder */
     object-fit: cover;
-    /* Penting agar gambar tidak gepeng/distorsi */
 }
 
 /* Bagian Bawah ("IT BERRIES") */

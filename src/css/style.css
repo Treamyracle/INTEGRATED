@@ -63,8 +63,8 @@ label {
     position: relative; 
     display: flex;
     align-items: center;
-    background: #FDEDED;
-    border: 1px solid #F8BBD0;
+    background: #F9F9F9;
+    border: 1px solid #CCCCCC;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 15px;
@@ -92,7 +92,7 @@ input {
 .sign-in-btn {
     width: 100%;
     padding: 12px;
-    background: #D84040;
+    background: #000000;
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -103,7 +103,7 @@ input {
 }
 
 .sign-in-btn:hover {
-    background: #B71C1C;
+    background: #222222;
 }
 
 /* Social Login */
@@ -177,7 +177,7 @@ input {
 }
 
 .signup-text a {
-    color: #A31D1D;
+    color: #000000;
     text-decoration: none;
     font-weight: bold;
 }

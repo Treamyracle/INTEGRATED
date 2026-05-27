@@ -7,8 +7,10 @@ import {
   FaUserAstronaut,
   FaCalendarCheck,
   FaCut,
-  FaLightbulb
+  FaLightbulb,
+  FaSearch
 } from 'react-icons/fa';
+import { SiHuggingface } from 'react-icons/si';
 // Pastikan CSS DashboardLayout.css sudah terimport di layout induknya
 
 const DashboardHome = () => {
@@ -22,7 +24,7 @@ const DashboardHome = () => {
         {/* --- 1. PDF CONVERTER (Internal) --- */}
         <Link to="/dashboard/pdfconverter" className="menu-card">
           <div className="card-icon">
-            <FaFilePdf style={{ color: '#F40F02' }} />
+            <FaFilePdf style={{ color: '#111111' }} />
           </div>
           <h3>PDF Converter</h3>
           <p>Ubah file PDF menjadi gambar (PNG/ZIP)</p>
@@ -31,7 +33,7 @@ const DashboardHome = () => {
         {/* --- 2. ROOM MONITORING (Internal) --- */}
         <Link to="/dashboard/roomtemp" className="menu-card">
           <div className="card-icon">
-            <FaThermometerHalf style={{ color: '#007bff' }} />
+            <FaThermometerHalf style={{ color: '#111111' }} />
           </div>
           <h3>Room Temp</h3>
           <p>Pantau suhu dan kelembaban ruangan</p>
@@ -45,7 +47,7 @@ const DashboardHome = () => {
           className="menu-card"
         >
           <div className="card-icon">
-            <FaCalendarCheck style={{ color: '#28a745' }} />
+            <FaCalendarCheck style={{ color: '#111111' }} />
           </div>
           <h3>FilkomReserV</h3>
           <p>Sistem peminjaman ruangan Filkom</p>
@@ -59,7 +61,7 @@ const DashboardHome = () => {
           className="menu-card"
         >
           <div className="card-icon">
-            <FaCut style={{ color: '#fd7e14' }} />
+            <FaCut style={{ color: '#111111' }} />
           </div>
           <h3>Potongin</h3>
           <p>Aplikasi pemendek link (URL Shortener)</p>
@@ -73,10 +75,38 @@ const DashboardHome = () => {
           className="menu-card"
         >
           <div className="card-icon">
-            <FaLightbulb style={{ color: '#ffc107' }} />
+            <FaLightbulb style={{ color: '#111111' }} />
           </div>
           <h3>Filoti</h3>
           <p>Sistem Lost & Found Item</p>
+        </a>
+
+        {/* --- 6. DOCLENS (External) --- */}
+        <a
+          href="https://www.doclens.site/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="menu-card"
+        >
+          <div className="card-icon">
+            <FaSearch style={{ color: '#111111' }} />
+          </div>
+          <h3>DocLens</h3>
+          <p>AI Document Analysis & Insights</p>
+        </a>
+
+        {/* --- 7. INDOBERT NER GOLD (External) --- */}
+        <a
+          href="https://huggingface.co/treamyracle/indobert-ner-gold"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="menu-card"
+        >
+          <div className="card-icon">
+            <SiHuggingface style={{ color: '#111111' }} />
+          </div>
+          <h3>IndoBERT NER Gold</h3>
+          <p>Indonesian NLP Model (300+ monthly downloads)</p>
         </a>
       </div>
     </div>
